@@ -12,6 +12,7 @@ const Inicio = ({ navigation }) => {
     let partidas = await selecionaNomePartidas()
     navigation.navigate("Partidas Salvas", partidas);
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.viewLogo}>
@@ -23,6 +24,8 @@ const Inicio = ({ navigation }) => {
         <Button
           text='Nova partida'
           styleText={styles.text}
+          onPress={() => navigation.navigate("Nova Partida")}
+
         />
         <Button
           styleText={styles.text}

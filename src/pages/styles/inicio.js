@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:'space-evenly',
     alignContent:'center',
+
   },
   viewLogo: {
     flex: 1,
