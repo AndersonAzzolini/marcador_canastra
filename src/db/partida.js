@@ -3,13 +3,13 @@ import DatabaseSQLite from "./db";
 const db = new DatabaseSQLite();
 
 
-const insereNomePartida = (nomePartida) => {
+const insereNomePartida = (nomePartida, pontos) => {
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO partida (nome)
-                         VALUES ('${nomePartida}')`)
+          tx.executeSql(`INSERT INTO partida (nome, pontosMaximo)
+                         VALUES ('${nomePartida}', ${pontos})`)
             .then(([tx, result]) => {
               console.log(`inseriu na database... `, result.insertId);
               resolve(result.insertId)

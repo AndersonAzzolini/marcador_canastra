@@ -7,7 +7,7 @@ import { insereEquipes, selecionaNomeEquipes } from '../db/equipes'
 import { insereNomePartida } from '../db/partida'
 import Loader from '../components/loader'
 import { inserePontosInicias, selecionaPontos } from '../db/pontos'
-const NovaPartida = () => {
+const NovaPartida = ({ navigation }) => {
 
   const [nomeEquipe1, setNomeEquipe1] = useState('')
   const [nomeEquipe2, setNomeEquipe2] = useState('')
@@ -33,19 +33,30 @@ const NovaPartida = () => {
         return false
       }
 
-      let idPartida = await insereNomePartida(nomePartida)
+      let idPartida = await insereNomePartida(nomePartida, pontos)
+      console.log(idPartida);
       let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
+      console.log(idEquipe1);
+
       let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
+      console.log(idEquipe2);
+
       await inserePontosInicias(idEquipe1)
       await inserePontosInicias(idEquipe2)
-      selecionaPontos(idPartida)
+      let informacoesPartida = await selecionaPontos(idPartida)
+      console.log(informacoesPartida);
+      informacoesPartida.length > 0 ?
+        navigation.navigate("Partida em Andamento", { informacoesPartida })
+        :
+        Alert.alert(
+          'Erro',
+          'Problema ao criar partida..'
+        )
+
       console.log('inseriu tudo', idPartida, idEquipe1, idEquipe2)
     } catch (e) {
       console.log(e)
-      Alert.alert(
-        'Erro',
-        'Problema ao criar partida..'
-      )
+
     } finally {
       setLoading(false)
     }

@@ -34,7 +34,8 @@ const selecionaPontos = (idPartida) => {
           tx.executeSql(`SELECT pontos.pontos,
                                 pontos.idEquipe,
                                 equipes.nome nomeEquipe,
-                                partida.nome nomePartida
+                                partida.nome nomePartida,
+                                partida.pontosMaximo
                          FROM equipes
                          INNER JOIN pontos ON equipes.rowid = pontos.idEquipe
                          INNER JOIN partida ON equipes.idPartida = partida.rowid
@@ -42,7 +43,7 @@ const selecionaPontos = (idPartida) => {
             var partidas = [];
             for (let i = 0; i < results.rows.length; ++i)
               partidas.push(results.rows.item(i));
-            console.log(partidas);
+            resolve(partidas);
           });
         }).catch(err => {
           console.log(err);

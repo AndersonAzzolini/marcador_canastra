@@ -1,12 +1,20 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, Alert } from 'react-native';
 import Button from '../components/button';
 import { selecionaPontos } from '../db/pontos';
 import { styles } from './styles/partidasSalvas';
 
 const PartidasSalvas = ({ route, navigation }) => {
-
   const partidas = route.params
+
+  const carregarPartida = async (idPartida) => {
+    let informacoesPartida = await selecionaPontos(idPartida)
+    informacoesPartida.length > 0 ? navigation.replace("Partida em Andamento", {informacoesPartida}) :
+      Alert.alert(
+        'Erro',
+        'Erro ao carregar partida'
+      )
+  }
 
   if (partidas.length > 0) {
     return (
@@ -16,7 +24,7 @@ const PartidasSalvas = ({ route, navigation }) => {
             <Button
               text={partidas.nome}
               style={styles.botao}
-              onPress={() => selecionaPontos(partidas.rowid)}
+              onPress={() => carregarPartida(partidas.rowid)}
             />
           )
         })}

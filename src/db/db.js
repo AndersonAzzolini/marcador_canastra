@@ -29,7 +29,7 @@ export default class DatabaseSQLite {
                   console.log("Database not yet ready ... populating data");
                   db.transaction(tx => {
                     //TABLES
-                    tx.executeSql(`CREATE TABLE IF NOT EXISTS partida(nome text)`);
+                    tx.executeSql(`CREATE TABLE IF NOT EXISTS partida(nome TEXT, pontosMaximo INTEGER)`);
 
                   })
                     .then(() => {
