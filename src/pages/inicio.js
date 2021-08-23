@@ -10,6 +10,7 @@ const Inicio = ({ navigation }) => {
 
   const partidasSalvas = async () => {
     let partidas = await selecionaNomePartidas()
+    console.log(partidas);
     navigation.navigate("Partidas Salvas", partidas);
   }
 

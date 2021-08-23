@@ -4,16 +4,12 @@ const styles = StyleSheet.create({
 
   scroll: {
     flexGrow: 1,
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
+    paddingHorizontal: 20,
+
   },
   botao: {
-    flex: 1,
     borderRadius: 10,
-  },
-  viewBotoes: {
-    flex: 1,
-    paddingHorizontal: 20,
-    height: Dimensions.get('window').height * 0.15
   },
   viewSemPartida: {
     alignContent: 'center',

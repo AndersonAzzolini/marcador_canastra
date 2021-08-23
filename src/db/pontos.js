@@ -33,8 +33,8 @@ const selecionaPontos = (idPartida) => {
         db.transaction(tx => {
           tx.executeSql(`SELECT pontos.pontos,
                                 pontos.idEquipe,
-                                equipes.nome,
-                                partida.nome
+                                equipes.nome nomeEquipe,
+                                partida.nome nomePartida
                          FROM equipes
                          INNER JOIN pontos ON equipes.rowid = pontos.idEquipe
                          INNER JOIN partida ON equipes.idPartida = partida.rowid
