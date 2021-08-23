@@ -5565,7 +5565,12 @@
   dependencies:
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@>=0.65.0-rc.0 || 0.0.0-*", "react-native@0.65.1":
+"react-native-sqlite-storage@^5.0.0":
+  "integrity" "sha512-c1Joq3/tO1nmIcP8SkRZNolPSbfvY8uZg5lXse0TmjIPC0qHVbk96IMvWGyly1TmYCIpxpuDRc0/xCffDbYIvg=="
+  "resolved" "https://registry.npmjs.org/react-native-sqlite-storage/-/react-native-sqlite-storage-5.0.0.tgz"
+  "version" "5.0.0"
+
+"react-native@*", "react-native@>=0.14.0", "react-native@>=0.65.0-rc.0 || 0.0.0-*", "react-native@0.65.1":
   "integrity" "sha512-0UOVSnlssweQZjuaUtzViCifE/4tXm8oRbxwakopc8GavPu9vLulde145GOw6QVYiOy4iL50f+2XXRdX9NmMeQ=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.65.1.tgz"
   "version" "0.65.1"
