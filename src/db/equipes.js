@@ -22,18 +22,15 @@ const selecionaNomePartidas = () => {
       });
   });
 }
-
-const insereNomeEquipes = (nomeEquipe) => {
+const insereEquipes = (nomeEquipe, idPartida) => {
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO partida (nome)
-                         VALUES ('${nomeEquipe}')`)
+          tx.executeSql(`INSERT INTO equipes (nome, idPartida)
+                         VALUES ('${nomeEquipe}', ${idPartida})`)
             .then(([tx, result]) => {
-              // const { dataHora } = result.rows.item(0);
-              console.log(`inseriu na database... `, result);
-              // resolve(dataHora);
+              resolve(true);
             })
             .catch(err => {
               resolve(null);
@@ -47,4 +44,23 @@ const insereNomeEquipes = (nomeEquipe) => {
   });
 }
 
-export { selecionaNomePartidas, insereNomeEquipes }
+const selecionaNomeEquipes = () => {
+  return new Promise(resolve => {
+    db.criaDataBase()
+      .then(db => {
+        db.transaction(tx => {
+          tx.executeSql('SELECT ROWID, idPartida, nome FROM equipes ', [], (tx, results) => {
+            var partidas = [];
+            for (let i = 0; i < results.rows.length; ++i)
+              partidas.push(results.rows.item(i));
+            console.log(partidas);
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+  });
+}
+export { selecionaNomePartidas, insereEquipes, selecionaNomeEquipes }
