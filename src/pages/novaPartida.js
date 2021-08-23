@@ -46,7 +46,7 @@ const NovaPartida = ({ navigation }) => {
       let informacoesPartida = await selecionaPontos(idPartida)
       console.log(informacoesPartida);
       informacoesPartida.length > 0 ?
-        navigation.navigate("Partida em Andamento", { informacoesPartida })
+        navigation.replace("Partida em Andamento", { informacoesPartida })
         :
         Alert.alert(
           'Erro',

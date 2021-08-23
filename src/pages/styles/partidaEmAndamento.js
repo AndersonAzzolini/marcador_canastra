@@ -8,16 +8,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
 
   },
+  viewPontos: {
+    paddingTop: 30,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around'
+  },
+  viewPontosTotal: {
+    width: Dimensions.get('window').width * 0.35,
+    paddingTop: 15,
+    justifyContent: 'flex-start'
+  },
+  viewIcons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  text: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  textTotal: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   botao: {
-    borderRadius: 10,
+    width: Dimensions.get('window').width * 0.15,
+    height: 50
   },
-  viewSemPartida: {
-    alignContent: 'center',
-    justifyContent: 'center',
+  botaoExcluir: {
+    backgroundColor: 'red',
+    width: Dimensions.get('window').width * 0.15,
+    height: 50,
   },
-  text:{
-    textAlign:'center',
-    fontSize: 23
-  }
+  divider: {
+    backgroundColor: 'black',
+  },
+  image: {
+    height: 50,
+    width: 50
+  },
 })
 export { styles }

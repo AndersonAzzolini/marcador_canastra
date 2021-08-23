@@ -9,7 +9,7 @@ const PartidasSalvas = ({ route, navigation }) => {
 
   const carregarPartida = async (idPartida) => {
     let informacoesPartida = await selecionaPontos(idPartida)
-    informacoesPartida.length > 0 ? navigation.replace("Partida em Andamento", {informacoesPartida}) :
+    informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", {informacoesPartida}) :
       Alert.alert(
         'Erro',
         'Erro ao carregar partida'
