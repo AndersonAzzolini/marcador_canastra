@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from '../components/button'
-import { Text, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
 import { selecionaNomePartidas } from '../db/equipes'
-const Inicio = () => {
+const Inicio = ({ navigation }) => {
 
-  const [nomeEquipes, setNomeEquipes] = useState('')
   const db = new DatabaseSQLite()
 
   const partidasSalvas = async () => {
     let partidas = await selecionaNomePartidas()
-    console.log(partidas);
+    navigation.navigate("Partidas Salvas", partidas);
   }
   return (
     <View style={styles.container}>

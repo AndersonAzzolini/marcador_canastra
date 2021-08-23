@@ -8,10 +8,10 @@ const selecionaNomePartidas = () => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql('SELECT * FROM partida', [], (tx, results) => {
+          tx.executeSql('SELECT ROWID, nome FROM partida ', [], (tx, results) => {
             var partidas = [];
             for (let i = 0; i < results.rows.length; ++i)
-            partidas.push(results.rows.item(i));
+              partidas.push(results.rows.item(i));
             resolve(partidas);
           });
         }).catch(err => {
