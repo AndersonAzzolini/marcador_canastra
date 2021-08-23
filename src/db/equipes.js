@@ -30,7 +30,7 @@ const insereEquipes = (nomeEquipe, idPartida) => {
           tx.executeSql(`INSERT INTO equipes (nome, idPartida)
                          VALUES ('${nomeEquipe}', ${idPartida})`)
             .then(([tx, result]) => {
-              resolve(true);
+              resolve(result.insertId)
             })
             .catch(err => {
               resolve(null);

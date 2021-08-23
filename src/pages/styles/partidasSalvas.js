@@ -15,6 +15,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     height: Dimensions.get('window').height * 0.15
   },
-
+  viewSemPartida: {
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  text:{
+    textAlign:'center',
+    fontSize: 23
+  }
 })
 export { styles }

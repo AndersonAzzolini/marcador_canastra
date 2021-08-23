@@ -13,22 +13,32 @@ const PartidasSalvas = ({ route, navigation }) => {
     // let partida = await selecionaNomePartidas(idPartida)
   }
 
-  console.log(partidas);
-  return (
-    <ScrollView contentContainerStyle={styles.scroll}>
-      {partidas.map((partidas, indice) => {
-        return (
-          <View style={styles.viewBotoes}>
-            <Button
-              text={partidas.nome}
-              style={styles.botao}
-              onPress={() => buscaPartida(partidas.rowid)}
-            />
-          </View>
-        )
-      })}
-    </ScrollView>
-  )
+  if (partidas.lenght > 1) {
+    return (
+      <ScrollView contentContainerStyle={styles.scroll}>
+        {partidas.map((partidas, indice) => {
+          return (
+            <View style={styles.viewBotoes}>
+              <Button
+                text={partidas.nome}
+                style={styles.botao}
+                onPress={() => buscaPartida(partidas.rowid)}
+              />
+            </View>
+          )
+        })}
+      </ScrollView>
+    )
+  } else {
+    return (
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={styles.viewSemPartida}>
+          <Text style={styles.text}>Nenhuma partida criada...</Text>
+        </View>
+      </ScrollView>
+
+    )
+  }
 }
 
 export default PartidasSalvas

@@ -68,7 +68,7 @@ export default class DatabaseSQLite {
                   console.log("Database not yet ready ... populating data");
                   db.transaction(tx => {
                     //TABLES
-                    tx.executeSql(`CREATE TABLE IF NOT EXISTS pontos( nome TEXT, 
+                    tx.executeSql(`CREATE TABLE IF NOT EXISTS pontos( pontos INTEGER, 
                                                                     idEquipe INTEGER,
                     FOREIGN KEY(idEquipe) REFERENCES equipes(ROWID))`);
 

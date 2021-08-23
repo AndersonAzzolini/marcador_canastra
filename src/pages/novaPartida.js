@@ -6,6 +6,7 @@ import Button from '../components/button'
 import { insereEquipes, selecionaNomeEquipes } from '../db/equipes'
 import { insereNomePartida } from '../db/partida'
 import Loader from '../components/loader'
+import { inserePontosInicias, selecionaPontos } from '../db/pontos'
 const NovaPartida = () => {
 
   const [nomeEquipe1, setNomeEquipe1] = useState('')
@@ -14,7 +15,7 @@ const NovaPartida = () => {
   const [loading, setLoading] = useState(false)
   const [pontos, setPontos] = useState()
 
-  const verificaValores = async () => {
+  const criaPartida = async () => {
     try {
       setLoading(true)
       if (!nomeEquipe1 || !nomeEquipe2 || !pontos || !nomePartida) {
@@ -33,18 +34,23 @@ const NovaPartida = () => {
       }
 
       let idPartida = await insereNomePartida(nomePartida)
-      await insereEquipes(nomeEquipe1, idPartida)
-      await insereEquipes(nomeEquipe2, idPartida)
-      console.log('inseriu tudo ')
+      let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
+      let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
+      await inserePontosInicias(idEquipe1)
+      await inserePontosInicias(idEquipe2)
+      selecionaPontos(idPartida)
+      console.log('inseriu tudo', idPartida, idEquipe1, idEquipe2)
     } catch (e) {
-      console.log(e);
+      console.log(e)
+      Alert.alert(
+        'Erro',
+        'Problema ao criar partida..'
+      )
     } finally {
       setLoading(false)
     }
-
   }
 
-  // if()
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <Loader
@@ -83,11 +89,14 @@ const NovaPartida = () => {
       </View>
       <View style={styles.viewBotoes}>
         <Button
-          onPress={() => verificaValores()}
+          onPress={() => criaPartida()}
           text='Criar partida' />
         <Button
           onPress={() => selecionaNomeEquipes()}
-          text='teste' />
+          text='equipes' />
+        <Button
+          onPress={() => selecionaPontos(2)}
+          text='pontos' />
 
       </View>
     </ScrollView >
