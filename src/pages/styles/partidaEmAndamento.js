@@ -20,25 +20,29 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   viewIcons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+    marginTop: 15,
+    justifyContent: 'center',
   },
   text: {
     fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center'
   },
+  textEquipes:{
+    marginBottom:15
+  },
   textTotal: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#36D948'
   },
   botao: {
-    width: Dimensions.get('window').width * 0.15,
-    height: 50
+    borderRadius: 10,
+    height: 50,
   },
   botaoExcluir: {
-    backgroundColor: 'red',
-    width: Dimensions.get('window').width * 0.15,
+    backgroundColor: '#FA5A46',
     height: 50,
   },
   divider: {
@@ -46,7 +50,10 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 50,
-    width: 50
+    width: 50,
+  },
+  input: {
+    marginTop: 25,
   },
 })
 export { styles }

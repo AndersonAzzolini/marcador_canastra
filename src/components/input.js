@@ -21,7 +21,6 @@ const inputStyles = StyleSheet.create({
         borderBottomWidth: 1,
         marginBottom: 8,
         color: Cores.preto,
-
     },
 })
 

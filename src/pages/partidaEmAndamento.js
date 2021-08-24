@@ -1,36 +1,90 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Pressable, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
 import { inserePontosEquipe, selecionaPontosPorEquipe } from '../db/pontos'
-
+import Input from '../components/input'
+import Button from '../components/button'
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
   const [pontosEquipe2, setPontosEquipe2] = useState(route.params.pontosEquipe2)
+  const [totalPontosEquipe1, setTotalPontosEquipe1] = useState(0)
+  const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
+  const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
+  const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
   const equipe2 = route.params.informacoesPartida[1]
 
-  useEffect(async () => {
+  useEffect(() => {
     navigation.setOptions({ title: nomePartida })
   })
 
-  const adicionaPontoEquipe1 = () => {
-    setPontosEquipe1([...pontosEquipe1, { pontos: 20 }])
+
+  useEffect(() => {
+    soma(pontosEquipe1, 1)
+  }, [pontosEquipe1])
+
+  useEffect(() => {
+    soma(pontosEquipe2)
+  }, [pontosEquipe2])
+
+  const showAlert = () => {
+    Alert.alert(
+      'Erro',
+      'É necessário informar o valor do campo '
+    )
   }
 
-  const removeUltimoPontoEquipe1 = () => {
-    pontosEquipe1.pop()
-    setPontosEquipe1([...pontosEquipe1])
+  const adicionaPontoEquipe = (value) => {
+
+    if (value == 1 && inputPontosEquipe1) {
+      setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
+      setInputPontosEquipe1('')
+      console.log('caiu 1');
+
+    } else if (inputPontosEquipe2) {
+      console.log('caiu 2');
+      setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
+      setInputPontosEquipe2('')
+    } else {
+      showAlert()
+    }
   }
 
+  const soma = (array, value) => {
+    let total = 0
+    if (value == 1) {
+      console.log('caiu primeiro');
+      array.map((index) => {
+        total = total += parseInt(index.pontos)
+      })
+      setTotalPontosEquipe1(total);
+    } else {
+      array.map((index) => {
+        total = total += parseInt(index.pontos)
+      })
+      setTotalPontosEquipe2(total);
+    }
+
+  }
+
+  const removeUltimoPontoEquipe = (value) => {
+    if (value == 1) {
+      pontosEquipe1.pop()
+      setPontosEquipe1([...pontosEquipe1])
+    } else {
+      pontosEquipe2.pop()
+      setPontosEquipe2([...pontosEquipe2])
+    }
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.viewPontos}>
         <View >
-          <Text style={styles.text}>
+          <Text style={[styles.text, styles.textEquipes]}>
             {equipe1.nomeEquipe}
           </Text>
           {pontosEquipe1.map((index => {
@@ -42,55 +96,65 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           <View style={styles.viewPontosTotal}>
             <Divider
               style={styles.divider} />
-            <Text style={styles.textTotal}></Text>
+            <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
+            <View style={styles.input}>
+              <Input
+                keyboardType='phone-pad'
+                value={inputPontosEquipe1}
+                onChangeText={text => setInputPontosEquipe1(text)}
+                placeholder='Pontos a adicionar' />
+            </View>
             <View style={styles.viewIcons}>
-              <Pressable onPress={() => adicionaPontoEquipe1()}>
-                <Image style={styles.image}
-                  source={require('../assets/img/plus.png')}
-                />
-              </Pressable>
-              <Pressable onPress={() => removeUltimoPontoEquipe1()}>
-                <Image style={styles.image}
-                  source={require('../assets/img/costas.png')}
-                />
-              </Pressable>
+              <Button
+                text='Adicionar ponto'
+                onPress={() => adicionaPontoEquipe(1)}
+                style={styles.botao}
+              />
+              <Button
+                onPress={() => removeUltimoPontoEquipe(1)}
+                text='Remover ponto'
+                style={styles.botaoExcluir}
+              />
             </View>
           </View>
         </View>
         <View >
-          <Text style={styles.text}>
+          <Text style={[styles.text, styles.textEquipes]}>
             {equipe2.nomeEquipe}
           </Text>
           {pontosEquipe2.map((index => {
-            return <Text style={styles.text}>
-              {index.pontos}
-            </Text>
+            return (
+              <Text style={styles.text}>
+                {index.pontos}
+              </Text>
+            )
           }))}
           <View style={styles.viewPontosTotal}>
             <Divider
               style={styles.divider} />
-            <Text style={styles.textTotal}></Text>
+            <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
+          </View>
+          <View style={styles.input}>
+            <Input
+              keyboardType='phone-pad'
+              value={inputPontosEquipe2}
+              onChangeText={text => setInputPontosEquipe2(text)}
+              placeholder='Pontos a adicionar' />
           </View>
           <View style={styles.viewIcons}>
-            <Pressable>
-              <Image style={styles.image}
-                source={require('../assets/img/plus.png')}
-              />
-            </Pressable>
-            <Pressable>
-              <Image style={styles.image}
-                source={require('../assets/img/costas.png')}
-              />
-            </Pressable>
+            <Button
+              text='Adicionar ponto'
+              onPress={() => adicionaPontoEquipe()}
+              style={styles.botao}
+            />
+            <Button
+              text='Remover ponto'
+              onPress={() => removeUltimoPontoEquipe()}
+              style={styles.botaoExcluir}
+            />
           </View>
         </View>
       </View>
-
-      <Pressable onPress={() => inserePontosEquipe(11)}>
-        <Image style={styles.image}
-          source={require('../assets/img/costas.png')}
-        />
-      </Pressable>
     </ScrollView>
   )
 }
