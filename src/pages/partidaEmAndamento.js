@@ -5,6 +5,7 @@ import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, inserePontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
+import SnackbarComponent from '../components/snackbar'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -13,6 +14,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
   const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
+  const [snackbarVisible, setSnackbarVisible] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
@@ -52,6 +54,10 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     )
   }
 
+  const mostrarErroRemocaoPonto = () => {
+    setSnackbarVisible(true)
+  }
+
   const adicionaPontoEquipe = async (value) => {
     try {
       if (value == 1 && inputPontosEquipe1) {
@@ -88,13 +94,21 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const removeUltimoPontoEquipe = async (value) => {
     try {
       if (value == 1) {
-        await deletaPonto(equipe1.idEquipe)
-        pontosEquipe1.pop()
-        setPontosEquipe1([...pontosEquipe1])
+        if (pontosEquipe1.length > 1) {
+          await deletaPonto(equipe1.idEquipe)
+          pontosEquipe1.pop()
+          setPontosEquipe1([...pontosEquipe1])
+        } else {
+          mostrarErroRemocaoPonto()
+        }
       } else {
-        await deletaPonto(equipe2.idEquipe)
-        pontosEquipe2.pop()
-        setPontosEquipe2([...pontosEquipe2])
+        if (pontosEquipe2.length > 1) {
+          await deletaPonto(equipe2.idEquipe)
+          pontosEquipe2.pop()
+          setPontosEquipe2([...pontosEquipe2])
+        } else {
+          mostrarErroRemocaoPonto()
+        }
       }
     } catch (error) {
       console.log(error);
@@ -102,81 +116,88 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scroll}>
-      <View style={styles.viewPontos}>
-        <View >
-          <Text style={[styles.text, styles.textEquipes]}>
-            {equipe1.nomeEquipe}
-          </Text>
-          {pontosEquipe1.map((index => {
-            return <Text style={styles.text}>
-              {index.pontos}
+    <>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={styles.viewPontos}>
+          <View >
+            <Text style={[styles.text, styles.textEquipes]}>
+              {equipe1.nomeEquipe}
             </Text>
-          }))}
-          <View style={styles.viewPontosTotal}>
-            <Divider
-              style={styles.divider} />
-            <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
+            {pontosEquipe1.map((index => {
+              return <Text style={styles.text}>
+                {index.pontos}
+              </Text>
+            }))}
+            <View style={styles.viewPontosTotal}>
+              <Divider
+                style={styles.divider} />
+              <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
+              <View style={styles.input}>
+                <Input
+                  keyboardType='phone-pad'
+                  value={inputPontosEquipe1}
+                  onChangeText={text => setInputPontosEquipe1(text)}
+                  placeholder='Pontos a adicionar' />
+              </View>
+              <View style={styles.viewIcons}>
+                <Button
+                  text='Adicionar ponto'
+                  onPress={() => adicionaPontoEquipe(1)}
+                  style={styles.botao}
+                />
+                <Button
+                  onPress={() => confirmacaoRemoverPonto(1)}
+                  text='Remover ponto'
+                  style={styles.botaoExcluir}
+                />
+              </View>
+            </View>
+          </View>
+          <View >
+            <Text style={[styles.text, styles.textEquipes]}>
+              {equipe2.nomeEquipe}
+            </Text>
+            {pontosEquipe2.map((index => {
+              return (
+                <Text style={styles.text}>
+                  {index.pontos}
+                </Text>
+              )
+            }))}
+            <View style={styles.viewPontosTotal}>
+              <Divider
+                style={styles.divider} />
+              <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
+            </View>
             <View style={styles.input}>
               <Input
                 keyboardType='phone-pad'
-                value={inputPontosEquipe1}
-                onChangeText={text => setInputPontosEquipe1(text)}
+                value={inputPontosEquipe2}
+                onChangeText={text => setInputPontosEquipe2(text)}
                 placeholder='Pontos a adicionar' />
             </View>
             <View style={styles.viewIcons}>
               <Button
                 text='Adicionar ponto'
-                onPress={() => adicionaPontoEquipe(1)}
+                onPress={() => adicionaPontoEquipe()}
                 style={styles.botao}
               />
               <Button
-                onPress={() => confirmacaoRemoverPonto(1)}
                 text='Remover ponto'
+                onPress={() => confirmacaoRemoverPonto()}
                 style={styles.botaoExcluir}
               />
             </View>
           </View>
         </View>
-        <View >
-          <Text style={[styles.text, styles.textEquipes]}>
-            {equipe2.nomeEquipe}
-          </Text>
-          {pontosEquipe2.map((index => {
-            return (
-              <Text style={styles.text}>
-                {index.pontos}
-              </Text>
-            )
-          }))}
-          <View style={styles.viewPontosTotal}>
-            <Divider
-              style={styles.divider} />
-            <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
-          </View>
-          <View style={styles.input}>
-            <Input
-              keyboardType='phone-pad'
-              value={inputPontosEquipe2}
-              onChangeText={text => setInputPontosEquipe2(text)}
-              placeholder='Pontos a adicionar' />
-          </View>
-          <View style={styles.viewIcons}>
-            <Button
-              text='Adicionar ponto'
-              onPress={() => adicionaPontoEquipe()}
-              style={styles.botao}
-            />
-            <Button
-              text='Remover ponto'
-              onPress={() => confirmacaoRemoverPonto()}
-              style={styles.botaoExcluir}
-            />
-          </View>
-        </View>
-      </View>
- 
-    </ScrollView>
+      </ScrollView>
+
+      <SnackbarComponent
+        onDismissSnackBar={() => setSnackbarVisible(false)}
+        visible={snackbarVisible}
+        text='Este valor é padrão, impossível removê-lo'
+      />
+    </>
   )
 }
 
