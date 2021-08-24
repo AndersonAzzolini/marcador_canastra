@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
 
@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-
   },
   botao: {
     flex: 1,
@@ -24,7 +23,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingBottom: 30
   },
-
 
 })
 export { styles }
