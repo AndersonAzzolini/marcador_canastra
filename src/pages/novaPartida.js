@@ -3,10 +3,10 @@ import { View, ScrollView, Text, Alert } from 'react-native'
 import { styles } from './styles/novaPartida'
 import Input from '../components/input'
 import Button from '../components/button'
-import { insereEquipes, selecionaNomeEquipes } from '../db/equipes'
+import { insereEquipes } from '../db/equipes'
 import { insereNomePartida } from '../db/partida'
 import Loader from '../components/loader'
-import { inserePontosInicias, selecionaPontos } from '../db/pontos'
+import { inserePontos, selecionaPontos } from '../db/pontos'
 const NovaPartida = ({ navigation }) => {
 
   const [nomeEquipe1, setNomeEquipe1] = useState('123')
@@ -36,8 +36,8 @@ const NovaPartida = ({ navigation }) => {
       let idPartida = await insereNomePartida(nomePartida, pontos)
       let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
       let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
-      await inserePontosInicias(idEquipe1)
-      await inserePontosInicias(idEquipe2)
+      await inserePontos(idEquipe1)
+      await inserePontos(idEquipe2)
       let informacoesPartida = await selecionaPontos(idPartida)
       let pontosEquipe1 = [{ pontos: 0 }]
       let pontosEquipe2 = [{ pontos: 0 }]

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native'
+import { Alert, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
-import { inserePontosEquipe, selecionaPontosPorEquipe } from '../db/pontos'
+import { deletaPonto, inserePontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
+
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
   const [pontosEquipe2, setPontosEquipe2] = useState(route.params.pontosEquipe2)
@@ -21,7 +22,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     navigation.setOptions({ title: nomePartida })
   })
 
-
   useEffect(() => {
     soma(pontosEquipe1, 1)
   }, [pontosEquipe1])
@@ -37,19 +37,36 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     )
   }
 
-  const adicionaPontoEquipe = (value) => {
+  const confirmacaoRemoverPonto = (value) => {
+    Alert.alert(
+      'Confirmação',
+      'Deseja mesmo exluir o último ponto?',
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Apagar", onPress: () => removeUltimoPontoEquipe(value) }
+      ]
+    )
+  }
 
-    if (value == 1 && inputPontosEquipe1) {
-      setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
-      setInputPontosEquipe1('')
-      console.log('caiu 1');
-
-    } else if (inputPontosEquipe2) {
-      console.log('caiu 2');
-      setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
-      setInputPontosEquipe2('')
-    } else {
-      showAlert()
+  const adicionaPontoEquipe = async (value) => {
+    try {
+      if (value == 1 && inputPontosEquipe1) {
+        setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
+        await inserePontos(equipe1.idEquipe, inputPontosEquipe1)
+        setInputPontosEquipe1('')
+      } else if (inputPontosEquipe2) {
+        setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
+        await inserePontos(equipe2.idEquipe, inputPontosEquipe2)
+        setInputPontosEquipe2('')
+      } else {
+        showAlert()
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -67,16 +84,21 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       })
       setTotalPontosEquipe2(total);
     }
-
   }
 
-  const removeUltimoPontoEquipe = (value) => {
-    if (value == 1) {
-      pontosEquipe1.pop()
-      setPontosEquipe1([...pontosEquipe1])
-    } else {
-      pontosEquipe2.pop()
-      setPontosEquipe2([...pontosEquipe2])
+  const removeUltimoPontoEquipe = async (value) => {
+    try {
+      if (value == 1) {
+        await deletaPonto(equipe1.idEquipe)
+        pontosEquipe1.pop()
+        setPontosEquipe1([...pontosEquipe1])
+      } else {
+        await deletaPonto(equipe2.idEquipe)
+        pontosEquipe2.pop()
+        setPontosEquipe2([...pontosEquipe2])
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -111,7 +133,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 style={styles.botao}
               />
               <Button
-                onPress={() => removeUltimoPontoEquipe(1)}
+                onPress={() => confirmacaoRemoverPonto(1)}
                 text='Remover ponto'
                 style={styles.botaoExcluir}
               />
@@ -149,7 +171,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             />
             <Button
               text='Remover ponto'
-              onPress={() => removeUltimoPontoEquipe()}
+              onPress={() => confirmacaoRemoverPonto()}
               style={styles.botaoExcluir}
             />
           </View>

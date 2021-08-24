@@ -2,14 +2,14 @@ import DatabaseSQLite from "./db";
 
 const db = new DatabaseSQLite();
 
-
-const inserePontosInicias = (idEquipe) => {
+const inserePontos = (idEquipe, pontos) => {
+  let value = pontos ? pontos : 0
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos)
-                         VALUES ('${idEquipe}', 0)`)
+          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos, pontoDeletado)
+                         VALUES ('${idEquipe}', ${value}, 0)`)
             .then(([tx, result]) => {
               console.log(`inseriu na database... `, result.insertId);
               resolve(result.insertId)
@@ -60,7 +60,8 @@ const selecionaPontosPorEquipe = (idEquipe) => {
         db.transaction(tx => {
           tx.executeSql(`SELECT pontos
                          FROM pontos
-                         WHERE idEquipe = ${idEquipe}`, [], (tx, results) => {
+                         WHERE idEquipe = ${idEquipe} 
+                         AND pontoDeletado = 0`, [], (tx, results) => {
             var pontosEquipe = [];
             for (let i = 0; i < results.rows.length; ++i)
               pontosEquipe.push(results.rows.item(i));
@@ -75,15 +76,20 @@ const selecionaPontosPorEquipe = (idEquipe) => {
   });
 }
 
-const inserePontosEquipe = (idEquipe) => {
+const deletaPonto = (idEquipe) => {
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO pontos (pontos, idEquipe) VALUES (150, ${idEquipe}) `, [], (tx, results) => {
-            console.log(`inseriu na database... `, result.insertId);
-            resolve(result.insertId)
-          });
+          tx.executeSql(`UPDATE pontos SET pontoDeletado = 1
+                         WHERE ROWID = (SELECT MAX(ROWID) FROM pontos WHERE idEquipe = ${idEquipe})`)
+            .then(([tx, result]) => {
+              console.log(`deletou da base... `, result.insertId);
+              resolve(result.insertId)
+            })
+            .catch(err => {
+              resolve(null);
+            });;
         }).catch(err => {
           console.log(err);
         });
@@ -93,5 +99,4 @@ const inserePontosEquipe = (idEquipe) => {
   });
 }
 
-
-export { selecionaPontos, inserePontosInicias, selecionaPontosPorEquipe, inserePontosEquipe }
+export { selecionaPontos, inserePontos, selecionaPontosPorEquipe, deletaPonto}

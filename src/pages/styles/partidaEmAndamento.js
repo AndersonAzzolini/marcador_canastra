@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: 20,
-
   },
   viewPontos: {
     paddingTop: 30,

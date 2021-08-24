@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     paddingHorizontal: 15
   },
-
   viewBotoes: {
     flex: 1,
     justifyContent:'space-evenly',
@@ -27,7 +26,6 @@ const styles = StyleSheet.create({
   text:{
     fontSize: 22
   },
-
 
 })
 export { styles }
