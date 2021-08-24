@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { ScrollView, View, Text, Alert } from 'react-native';
 import Button from '../components/button';
 import { selecionaPontos, selecionaPontosPorEquipe } from '../db/pontos';
@@ -17,6 +17,8 @@ const PartidasSalvas = ({ route, navigation }) => {
         'Erro ao carregar partida'
       )
   }
+
+
 
   if (partidas.length > 0) {
     return (

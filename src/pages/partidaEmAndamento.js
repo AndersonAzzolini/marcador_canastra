@@ -5,14 +5,13 @@ import { styles } from './styles/partidaEmAndamento'
 import { inserePontosEquipe, selecionaPontosPorEquipe } from '../db/pontos'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
-  console.log(route.params.informacoesPartida)
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
   const [pontosEquipe2, setPontosEquipe2] = useState(route.params.pontosEquipe2)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
   const equipe2 = route.params.informacoesPartida[1]
-  
+
   useEffect(async () => {
     navigation.setOptions({ title: nomePartida })
   })
