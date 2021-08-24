@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../components/button'
 import { View, Image } from 'react-native'
 import DatabaseSQLite from '../db/db'
@@ -24,6 +24,9 @@ const Inicio = ({ navigation }) => {
     }
   }
 
+  useEffect(async () => {
+    await db.criaDataBase()
+  })
   return (
     <View style={styles.container}>
       <Loader

@@ -73,7 +73,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const soma = (array, value) => {
     let total = 0
     if (value == 1) {
-      console.log('caiu primeiro');
       array.map((index) => {
         total = total += parseInt(index.pontos)
       })
@@ -113,7 +112,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             return <Text style={styles.text}>
               {index.pontos}
             </Text>
-
           }))}
           <View style={styles.viewPontosTotal}>
             <Divider
@@ -177,6 +175,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           </View>
         </View>
       </View>
+ 
     </ScrollView>
   )
 }

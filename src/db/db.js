@@ -30,7 +30,6 @@ export default class DatabaseSQLite {
                   db.transaction(tx => {
                     //TABLES
                     tx.executeSql(`CREATE TABLE IF NOT EXISTS partida(nome TEXT, pontosMaximo INTEGER)`);
-
                   })
                     .then(() => {
                       console.log("Table created partida");
@@ -48,7 +47,7 @@ export default class DatabaseSQLite {
                   db.transaction(tx => {
                     //TABLES
                     tx.executeSql(`CREATE TABLE IF NOT EXISTS equipes(nome TEXT, 
-                                                                    idPartida INTEGER,
+                                                                      idPartida INTEGER,
                                 FOREIGN KEY(idPartida) REFERENCES partida(ROWID))`);
 
                     console.log("Table created equipes");
@@ -69,8 +68,7 @@ export default class DatabaseSQLite {
                   db.transaction(tx => {
                     //TABLES
                     tx.executeSql(`CREATE TABLE IF NOT EXISTS pontos( pontos INTEGER, 
-                                                                    idEquipe INTEGER,
-                                                                    pontoDeletado INTEGER,
+                                                                      idEquipe INTEGER,
                     FOREIGN KEY(idEquipe) REFERENCES equipes(ROWID))`);
 
                     console.log("Table created pontos");

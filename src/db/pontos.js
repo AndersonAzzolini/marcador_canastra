@@ -8,8 +8,8 @@ const inserePontos = (idEquipe, pontos) => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos, pontoDeletado)
-                         VALUES ('${idEquipe}', ${value}, 0)`)
+          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos)
+                         VALUES ('${idEquipe}', ${value})`)
             .then(([tx, result]) => {
               console.log(`inseriu na database... `, result.insertId);
               resolve(result.insertId)
@@ -60,8 +60,7 @@ const selecionaPontosPorEquipe = (idEquipe) => {
         db.transaction(tx => {
           tx.executeSql(`SELECT pontos
                          FROM pontos
-                         WHERE idEquipe = ${idEquipe} 
-                         AND pontoDeletado = 0`, [], (tx, results) => {
+                         WHERE idEquipe = ${idEquipe}`, [], (tx, results) => {
             var pontosEquipe = [];
             for (let i = 0; i < results.rows.length; ++i)
               pontosEquipe.push(results.rows.item(i));
@@ -81,7 +80,7 @@ const deletaPonto = (idEquipe) => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`UPDATE pontos SET pontoDeletado = 1
+          tx.executeSql(`DELETE FROM pontos 
                          WHERE ROWID = (SELECT MAX(ROWID) FROM pontos WHERE idEquipe = ${idEquipe})`)
             .then(([tx, result]) => {
               console.log(`deletou da base... `, result.insertId);
@@ -99,4 +98,4 @@ const deletaPonto = (idEquipe) => {
   });
 }
 
-export { selecionaPontos, inserePontos, selecionaPontosPorEquipe, deletaPonto}
+export { selecionaPontos, inserePontos, selecionaPontosPorEquipe, deletaPonto }

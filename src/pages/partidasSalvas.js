@@ -10,7 +10,6 @@ const PartidasSalvas = ({ route, navigation }) => {
     let informacoesPartida = await selecionaPontos(idPartida)
     let pontosEquipe1 = await selecionaPontosPorEquipe(informacoesPartida[0].idEquipe)
     let pontosEquipe2 = await selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
-
     informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2 }) :
       Alert.alert(
         'Erro',
