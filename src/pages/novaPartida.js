@@ -9,11 +9,11 @@ import Loader from '../components/loader'
 import { inserePontosInicias, selecionaPontos } from '../db/pontos'
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('')
-  const [nomeEquipe2, setNomeEquipe2] = useState('')
-  const [nomePartida, setNomePartida] = useState('')
+  const [nomeEquipe1, setNomeEquipe1] = useState('123')
+  const [nomeEquipe2, setNomeEquipe2] = useState('123')
+  const [nomePartida, setNomePartida] = useState('123')
   const [loading, setLoading] = useState(false)
-  const [pontos, setPontos] = useState()
+  const [pontos, setPontos] = useState('1231')
 
   const criaPartida = async () => {
     try {
@@ -34,19 +34,15 @@ const NovaPartida = ({ navigation }) => {
       }
 
       let idPartida = await insereNomePartida(nomePartida, pontos)
-      console.log(idPartida);
       let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
-      console.log(idEquipe1);
-
       let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
-      console.log(idEquipe2);
-
       await inserePontosInicias(idEquipe1)
       await inserePontosInicias(idEquipe2)
       let informacoesPartida = await selecionaPontos(idPartida)
-      console.log(informacoesPartida);
+      let pontosEquipe1 = [{ pontos: 0 }]
+      let pontosEquipe2 = [{ pontos: 0 }]
       informacoesPartida.length > 0 ?
-        navigation.replace("Partida em Andamento", { informacoesPartida })
+        navigation.replace("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2 })
         :
         Alert.alert(
           'Erro',
@@ -68,7 +64,6 @@ const NovaPartida = ({ navigation }) => {
         visible={loading}
         text='Criando partida... aguarde'
       />
-
       <View style={styles.viewInputs}>
         <Text>Nome da partida:</Text>
         <Input
@@ -102,13 +97,6 @@ const NovaPartida = ({ navigation }) => {
         <Button
           onPress={() => criaPartida()}
           text='Criar partida' />
-        <Button
-          onPress={() => selecionaNomeEquipes()}
-          text='equipes' />
-        <Button
-          onPress={() => selecionaPontos(2)}
-          text='pontos' />
-
       </View>
     </ScrollView >
   )
