@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -8,22 +8,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   viewBotoes: {
-    flex: 1,
-    justifyContent:'space-evenly',
-    alignContent:'center',
+    paddingVertical: Dimensions.get('window').height * 0.02,
+    flex: 0.8,
+    justifyContent: 'space-evenly',
+    alignContent: 'center',
 
   },
   viewLogo: {
-    flex: 1,
-    justifyContent:'center',
-    alignItems:'center',
+    flex: 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scroll: {
     flexGrow: 1,
     justifyContent: 'center'
   },
 
-  text:{
+  text: {
     fontSize: 22
   },
 

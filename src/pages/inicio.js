@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../components/button'
-import { View, Image } from 'react-native'
+import { View, Image, Dimensions } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
 import { selecionaNomePartidas } from '../db/equipes'
@@ -35,7 +35,11 @@ const Inicio = ({ navigation }) => {
       />
       <View style={styles.viewLogo}>
         <Image
-          source={require('../assets/img/logo.webp')}
+          style={{
+            maxHeight: Dimensions.get('window').height * 0.6,
+            maxWidth:Dimensions.get('window').width
+          }}
+          source={require('../assets/img/teste.png')}
         />
       </View>
       <View style={styles.viewBotoes}>
@@ -48,7 +52,7 @@ const Inicio = ({ navigation }) => {
         <Button
           styleText={styles.text}
           text='Partidas Salvas'
-          onPress={() => partidasSalvas()}
+          onPress={() => navigation.navigate("Partidas Salvas")}
         />
       </View>
     </View>

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import Cores from '../../assets/cores.json'
 
 const styles = StyleSheet.create({
 
@@ -13,11 +14,25 @@ const styles = StyleSheet.create({
   },
   viewSemPartida: {
     alignContent: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    flex: 1
   },
-  text:{
-    textAlign:'center',
-    fontSize: 23
-  }
+  viewBotaoSemPartida: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 25,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 23,
+    marginTop: 25
+  },
+  textActivityIndicator: {
+    fontSize: 18
+  },
+  ActivityIndicator: {
+    color: Cores.verde,
+    marginTop: 25
+  },
 })
 export { styles }
