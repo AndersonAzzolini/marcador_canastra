@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     paddingHorizontal: 20,
+    paddingVertical: 15
 
   },
   botao: {
@@ -27,12 +28,25 @@ const styles = StyleSheet.create({
     fontSize: 23,
     marginTop: 25
   },
+  textButton: {
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight:'bold'
+  },
+  text2: {
+    textAlign: 'center',
+    fontSize: 23,
+    marginTop: 25
+  },
   textActivityIndicator: {
     fontSize: 18
   },
   ActivityIndicator: {
     color: Cores.verde,
     marginTop: 25
+  },
+  btn: {
+    flex: 1
   },
 })
 export { styles }

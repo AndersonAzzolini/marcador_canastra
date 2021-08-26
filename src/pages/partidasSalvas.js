@@ -5,6 +5,10 @@ import { selecionaNomePartidas } from '../db/equipes';
 import { selecionaPontos, selecionaPontosPorEquipe } from '../db/pontos';
 import { styles } from './styles/partidasSalvas';
 import Cores from '../assets/cores.json'
+import {
+  parseISO,
+  format,
+} from 'date-fns';
 
 const PartidasSalvas = ({ route, navigation }) => {
   const [partidas, setPartidas] = useState([])
@@ -38,6 +42,12 @@ const PartidasSalvas = ({ route, navigation }) => {
     }
   }
 
+  const firstDate = parseISO('2018-04-01');
+  const formattedDate = format(
+    firstDate,
+    'dd-MM-yyyy'
+  );
+
   return loading ?
     <View>
       <ActivityIndicator
@@ -52,11 +62,20 @@ const PartidasSalvas = ({ route, navigation }) => {
       {partidas.length > 0 ?
         partidas.map((partidas, indice) => {
           return (
-            <Button
-              text={partidas.nome}
-              style={styles.botao}
-              onPress={() => carregarPartida(partidas.rowid)}
-            />
+            <View>
+              <Button
+                textData={format(
+                  parseISO(partidas.criadoEm),
+                  'dd/MM/yyyy'
+                )}
+                textVencedor=''
+                textNomeEquipes={partidas.nomeEquipes.replace(',', ' vs ')}
+                styleText={styles.textButton}
+                text={partidas.nome}
+                style={styles.botao}
+                onPress={() => carregarPartida(partidas.rowid)}
+              />
+            </View>
           )
         })
         :

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   viewPontosTotal: {
-    width: Dimensions.get('window').width * 0.35,
+    maxWidth: Dimensions.get('window').width * 0.4,
     paddingTop: 15,
     justifyContent: 'flex-start'
   },
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   textEquipes:{
+    maxWidth:Dimensions.get('window').width * 0.4,
     marginBottom:15
   },
   textTotal: {
@@ -38,11 +39,11 @@ const styles = StyleSheet.create({
   },
   botao: {
     borderRadius: 10,
-    height: 50,
+    minHeight: 50,
   },
   botaoExcluir: {
     backgroundColor: '#FA5A46',
-    height: 50,
+    minHeight: 50,
   },
   divider: {
     backgroundColor: 'black',
