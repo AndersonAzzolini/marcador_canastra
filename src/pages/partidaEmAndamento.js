@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, Text, View } from 'react-native'
+import { Alert, Dimensions, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, inserePontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
+import BannerComponent from '../components/banner'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -14,6 +15,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
   const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
+  const [vencedor, setVencedor] = useState('')
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
@@ -21,7 +23,9 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const equipe2 = route.params.informacoesPartida[1]
 
   useEffect(() => {
-    navigation.setOptions({ title: nomePartida })
+    navigation.setOptions({
+      title: nomePartida
+    })
   })
 
   useEffect(() => {
@@ -32,11 +36,28 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     soma(pontosEquipe2)
   }, [pontosEquipe2])
 
+
+  useEffect(() => {
+    comparaPontuação()
+  }, [totalPontosEquipe1, totalPontosEquipe2])
+
+
   const showAlert = () => {
     Alert.alert(
       'Erro',
       'É necessário informar o valor do campo '
     )
+  }
+
+  const comparaPontuação = () => {
+    if (totalPontosEquipe1 > pontosMaximo) {
+      setVencedor(equipe1.nomeEquipe)
+    } else if (totalPontosEquipe2 > pontosMaximo) {
+
+      setVencedor(equipe2.nomeEquipe)
+    } else {
+      setVencedor('')
+    }
   }
 
   const confirmacaoRemoverPonto = (value) => {
@@ -49,7 +70,10 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "Apagar", onPress: () => removeUltimoPontoEquipe(value) }
+        {
+          text: "Apagar",
+          onPress: () => removeUltimoPontoEquipe(value)
+        }
       ]
     )
   }
@@ -57,7 +81,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const mostrarErroRemocaoPonto = () => {
     setSnackbarVisible(true)
   }
-
+  
   const adicionaPontoEquipe = async (value) => {
     try {
       if (value == 1 && inputPontosEquipe1) {
@@ -83,6 +107,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         total = total += parseInt(index.pontos)
       })
       setTotalPontosEquipe1(total);
+      return total
     } else {
       array.map((index) => {
         total = total += parseInt(index.pontos)
@@ -117,7 +142,10 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   return (
     <>
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <BannerComponent />
+      <ScrollView contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps='handled'
+      >
         <View style={styles.viewPontos}>
           <View >
             <Text style={[styles.text, styles.textEquipes]}>
@@ -190,6 +218,33 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             </View>
           </View>
         </View>
+        <View style={{
+          flex: 1,
+          marginTop: 35,
+          minHeight: Dimensions.get('window').height * 0.25,
+        }}>
+          <Text style={{ fontSize: 16, marginTop: 40, }}>Pontos para vencer: <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{pontosMaximo}</Text></Text>
+          {
+            vencedor
+              ?
+              <View>
+                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={{ color: 'red', fontSize: 25 }}>{vencedor}</Text></Text>
+                <View style={{ justifyContent: 'center', flex: 1, }}>
+                  <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop:40 }}>
+                    <Button
+                      style={styles.botao}
+                      text='Recomeçar está partida' />
+                    <Button
+                      style={styles.botao}
+                      text='Criar outra' />
+                  </View>
+                </View>
+              </View>
+              :
+              null
+              
+          }
+        </View>
       </ScrollView>
 
       <SnackbarComponent
@@ -200,5 +255,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     </>
   )
 }
+
 
 export default PartidaEmAndamento

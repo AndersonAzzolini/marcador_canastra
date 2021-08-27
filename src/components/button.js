@@ -26,7 +26,6 @@ const Button = (props) => {
         <Text style={[buttonStyles.text, props.styleText]}>{props.text} </Text>
     }
 
-
   </TouchableOpacity>)
 }
 
@@ -35,15 +34,17 @@ const buttonStyles = StyleSheet.create({
     opacity: 0.5
   },
   viewDadosPartida: {
-    flex: 1.15,
+    flex: 1,
     minHeight: 75,
     justifyContent: 'space-evenly'
   },
   viewNomePartida: {
-    flex: 0.85,
+    flex: 1,
     justifyContent: 'center'
   },
   btn: {
+    // borderColor: 'red',
+    // borderWidth: 3,
     borderRadius: 10,
     maxWidth: Dimensions.get('screen').width,
     minHeight: 75,
@@ -71,7 +72,7 @@ const buttonStyles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
     textAlign: 'right',
-    paddingRight: 10
+    paddingRight: 10,
   },
 })
 

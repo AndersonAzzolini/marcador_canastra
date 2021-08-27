@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
   viewPontos: {
     paddingTop: 30,
     flexDirection: 'row',
-    flex: 1,
     justifyContent: 'space-around'
   },
   viewPontosTotal: {
