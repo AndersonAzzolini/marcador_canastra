@@ -81,7 +81,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const mostrarErroRemocaoPonto = () => {
     setSnackbarVisible(true)
   }
-  
+
   const adicionaPontoEquipe = async (value) => {
     try {
       if (value == 1 && inputPontosEquipe1) {
@@ -138,6 +138,30 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const confirmacaoRecomecarPartida = () => {
+    setPontosEquipe1([{ pontos: 0 }])
+    setPontosEquipe2([{ pontos: 0 }])
+
+  }
+
+  const recomecaPartida = () => {
+    Alert.alert(
+      'Confirmação',
+      `Deseja recomeçar essa partida e adicionar a vitória para ${vencedor} ?`,
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        {
+          text: "Sim",
+          onPress: () => confirmacaoRecomecarPartida()
+        }
+      ]
+    )
   }
 
   return (
@@ -223,16 +247,17 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           marginTop: 35,
           minHeight: Dimensions.get('window').height * 0.25,
         }}>
-          <Text style={{ fontSize: 16, marginTop: 40, }}>Pontos para vencer: <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{pontosMaximo}</Text></Text>
+          <Text style={{ fontSize: 16, marginTop: 40, }}>Pontos para vencer: {pontosMaximo}</Text>
           {
             vencedor
               ?
               <View>
                 <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={{ color: 'red', fontSize: 25 }}>{vencedor}</Text></Text>
                 <View style={{ justifyContent: 'center', flex: 1, }}>
-                  <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop:40 }}>
+                  <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop: 40 }}>
                     <Button
                       style={styles.botao}
+                      onPress={() => recomecaPartida()}
                       text='Recomeçar está partida' />
                     <Button
                       style={styles.botao}
@@ -242,7 +267,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
               </View>
               :
               null
-              
+
           }
         </View>
       </ScrollView>
