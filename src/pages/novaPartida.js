@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, ScrollView, Text, Alert } from 'react-native'
 import { styles } from './styles/novaPartida'
 import Input from '../components/input'
@@ -8,7 +8,8 @@ import { insereNomePartida } from '../db/partida'
 import Loader from '../components/loader'
 import { inserePontos, selecionaPontos } from '../db/pontos'
 import BannerComponent from '../components/banner'
-import { set } from 'date-fns'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { parseJSON } from 'date-fns'
 
 const NovaPartida = ({ navigation }) => {
 
@@ -16,8 +17,12 @@ const NovaPartida = ({ navigation }) => {
   const [nomeEquipe2, setNomeEquipe2] = useState('123')
   const [nomePartida, setNomePartida] = useState('123')
   const [loading, setLoading] = useState(false)
-  const [banner, setBanner] = useState(true)
+  const [banner, setBanner] = useState(false)
   const [pontos, setPontos] = useState('1231')
+
+  useEffect(() => {
+    verificaBanner()
+  })
   const criaPartida = async () => {
     try {
       setLoading(true)
@@ -61,9 +66,19 @@ const NovaPartida = ({ navigation }) => {
     }
   }
 
-  const naoMostraBanner = () => {
+  const naoMostraBanner = async (value) => {
+    try {
+      await AsyncStorage.setItem(
+        'bannerVisible', '1')
+      setBanner(false)
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-    setBanner(false)
+  const verificaBanner = async () => {
+    const value = await AsyncStorage.getItem('bannerVisible')
+    JSON.parse(value) == '1' ? setBanner(false) : setBanner(true)
   }
 
   return (
@@ -71,7 +86,7 @@ const NovaPartida = ({ navigation }) => {
       <BannerComponent
         text='A partida é salva automaticamente, não se preocupe com isso :)'
         labelTextoCancelar='Não mostrar novamente'
-        onPressCancelar={() => naoMostraBanner(false)}
+        onPressCancelar={() => naoMostraBanner()}
         onPressConfirmar={() => setBanner(false)}
         visible={banner} />
       <ScrollView contentContainerStyle={styles.scroll}>
@@ -112,6 +127,9 @@ const NovaPartida = ({ navigation }) => {
           <Button
             onPress={() => criaPartida()}
             text='Criar partida' />
+          <Button
+            onPress={async () => await funcao()}
+            text='fdsfsdf' />
         </View>
       </ScrollView >
     </>
