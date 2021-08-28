@@ -10,11 +10,11 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>{
-      <Stack.Navigator initialRouteName="Inicio" headerMode='none'>
-        <Stack.Screen name="Inicio" component={Inicio} />
+      <Stack.Navigator initialRouteName="Início" >
+        <Stack.Screen name="Início" component={Inicio}/>
         <Stack.Screen name="Partidas Salvas" component={PartidasSalvas} />
         <Stack.Screen name="Nova Partida" component={NovaPartida} />
-        <Stack.Screen name="Partida em Andamento" component={PartidaEmAndamento}/>
+        <Stack.Screen name="Partida em Andamento" component={PartidaEmAndamento} />
       </Stack.Navigator>
     }</NavigationContainer>
   );

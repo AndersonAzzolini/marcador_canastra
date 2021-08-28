@@ -40,7 +40,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     comparaPontuação()
   }, [totalPontosEquipe1, totalPontosEquipe2])
 
-
   const showAlert = () => {
     Alert.alert(
       'Erro',
@@ -250,7 +249,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             vencedor
               ?
               <View>
-                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={{ color: 'red', fontSize: 25 }}>{vencedor}</Text></Text>
+                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={styles.textVencedor }>{vencedor}</Text></Text>
                 <View style={{ justifyContent: 'center', flex: 1, }}>
                   <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop: 40 }}>
                     <Button
@@ -259,6 +258,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                       text='Recomeçar está partida' />
                     <Button
                       style={styles.botao}
+                      onPress={() => navigation.replace('Nova Partida')}
                       text='Criar outra' />
                   </View>
                 </View>

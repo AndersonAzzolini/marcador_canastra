@@ -24,6 +24,9 @@ const Inicio = ({ navigation }) => {
     }
   }
 
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false })
+  })
   useEffect(async () => {
     await db.criaDataBase()
   })
@@ -37,7 +40,7 @@ const Inicio = ({ navigation }) => {
         <Image
           style={{
             maxHeight: Dimensions.get('window').height * 0.6,
-            maxWidth:Dimensions.get('window').width
+            maxWidth: Dimensions.get('window').width
           }}
           source={require('../assets/img/teste.png')}
         />

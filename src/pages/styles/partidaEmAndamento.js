@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native'
-
+import Cores from '../../assets/cores.json'
 const styles = StyleSheet.create({
 
   scroll: {
@@ -26,15 +26,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center'
   },
-  textEquipes:{
-    maxWidth:Dimensions.get('window').width * 0.4,
-    marginBottom:15
+  textEquipes: {
+    maxWidth: Dimensions.get('window').width * 0.4,
+    marginBottom: 15
   },
   textTotal: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#36D948'
+  },
+  textVencedor: {
+    color: Cores.verdeEscuro,
+    fontSize: 25,
+    fontWeight: 'bold'
   },
   botao: {
     borderRadius: 10,

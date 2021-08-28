@@ -86,7 +86,7 @@ const PartidasSalvas = ({ route, navigation }) => {
           <View style={styles.viewBotaoSemPartida}>
             <Button
               text='Criar partida'
-              onPress={() => navigation.replace('Nova Partida')}
+              onPress={() => navigation.navigate('Nova Partida')}
             />
           </View>
         </ScrollView>

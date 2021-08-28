@@ -19,7 +19,6 @@ const NovaPartida = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(false)
   const [pontos, setPontos] = useState('1231')
-
   useEffect(() => {
     verificaBanner()
   })

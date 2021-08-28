@@ -4,5 +4,6 @@
     "preto": "#000000",
     "cinzaEscuro": "#C0C0C0",
     "branco": "#FFFFFF",
-    "fundoLoader": "rgba(0, 0, 0, 0.7)"
+    "fundoLoader": "rgba(0, 0, 0, 0.7)",
+    "verdeEscuro": "#1FE63D"
 }
