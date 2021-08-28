@@ -9,7 +9,7 @@ const SnackbarComponent = ({ ...props }) => {
     <View style={styles.container}>
       <Snackbar
         style={styles.snackBar}
-        duration={2500}
+        duration={25000}
         visible={props.visible}
         onDismiss={props.onDismissSnackBar}
         action={props.action ? {

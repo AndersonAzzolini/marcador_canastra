@@ -22,6 +22,26 @@ export default class DatabaseSQLite {
             .then(DB => {
               db = DB;
 
+              db.executeSql("SELECT 1 FROM historicoVencedor LIMIT 1")
+                .then(() => { })
+                .catch(error => {
+                  console.log("Received error: ", error);
+                  console.log("Database not yet ready ... populating data");
+                  db.transaction(tx => {
+                    //TABLES
+                    tx.executeSql(`CREATE TABLE IF NOT EXISTS historicoVencedor(idPartida INT, 
+                                                                                idEquipe INTEGER,
+                                FOREIGN KEY(idPartida) REFERENCES partida(ROWID),
+                                FOREIGN KEY(idEquipe) REFERENCES equipes(ROWID))`);
+                  })
+                    .then(() => {
+                      console.log("Criado tabela historicoVencedor");
+                    })
+                    .catch(error => {
+                      console.log(error);
+                    });
+                });
+
               db.executeSql("SELECT 1 FROM partida LIMIT 1")
                 .then(() => { })
                 .catch(error => {
@@ -34,7 +54,7 @@ export default class DatabaseSQLite {
                                                                       criadoEm DATE)`);
                   })
                     .then(() => {
-                      console.log("Table created partida");
+                      console.log("Criado tabela partida");
                     })
                     .catch(error => {
                       console.log(error);
@@ -52,10 +72,9 @@ export default class DatabaseSQLite {
                                                                       idPartida INTEGER,
                                 FOREIGN KEY(idPartida) REFERENCES partida(ROWID))`);
 
-                    console.log("Table created equipes");
                   })
                     .then(() => {
-                      console.log("Database created part 4");
+                      console.log("Criado tabela equipes");
                     })
                     .catch(error => {
                       console.log(error);
@@ -73,10 +92,9 @@ export default class DatabaseSQLite {
                                                                       idEquipe INTEGER,
                     FOREIGN KEY(idEquipe) REFERENCES equipes(ROWID))`);
 
-                    console.log("Table created pontos");
                   })
                     .then(() => {
-                      console.log("Database created part 3");
+                      console.log("Criado tabela pontos");
                     })
                     .catch(error => {
                       console.log(error);

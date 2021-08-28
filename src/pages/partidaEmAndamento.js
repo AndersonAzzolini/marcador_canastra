@@ -10,6 +10,7 @@ import SnackbarComponent from '../components/snackbar'
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
   const [pontosEquipe2, setPontosEquipe2] = useState(route.params.pontosEquipe2)
+  const [historicoVencedor, setHistoricoVencedor]=useState()
   const [totalPontosEquipe1, setTotalPontosEquipe1] = useState(0)
   const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
