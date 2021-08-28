@@ -9,16 +9,15 @@ import Loader from '../components/loader'
 import { inserePontos, selecionaPontos } from '../db/pontos'
 import BannerComponent from '../components/banner'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { parseJSON } from 'date-fns'
 
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('123')
-  const [nomeEquipe2, setNomeEquipe2] = useState('123')
-  const [nomePartida, setNomePartida] = useState('123')
+  const [nomeEquipe1, setNomeEquipe1] = useState('')
+  const [nomeEquipe2, setNomeEquipe2] = useState('')
+  const [nomePartida, setNomePartida] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(false)
-  const [pontos, setPontos] = useState('1231')
+  const [pontos, setPontos] = useState('')
   useEffect(() => {
     verificaBanner()
   })
@@ -76,8 +75,9 @@ const NovaPartida = ({ navigation }) => {
   }
 
   const verificaBanner = async () => {
+    console.log('caoi aqu')
     const value = await AsyncStorage.getItem('bannerVisible')
-    JSON.parse(value) == '1' ? setBanner(false) : setBanner(true)
+    JSON.parse(value) == '1' ? setBanner(false) : null
   }
 
   return (
@@ -88,7 +88,9 @@ const NovaPartida = ({ navigation }) => {
         onPressCancelar={() => naoMostraBanner()}
         onPressConfirmar={() => setBanner(false)}
         visible={banner} />
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps='handled'
+      >
         <Loader
           visible={loading}
           text='Criando partida... aguarde'
@@ -126,9 +128,6 @@ const NovaPartida = ({ navigation }) => {
           <Button
             onPress={() => criaPartida()}
             text='Criar partida' />
-          <Button
-            onPress={async () => await funcao()}
-            text='fdsfsdf' />
         </View>
       </ScrollView >
     </>

@@ -48,10 +48,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   const comparaPontuação = () => {
-    if (totalPontosEquipe1 > pontosMaximo) {
+    if ((totalPontosEquipe1 >= pontosMaximo) && (totalPontosEquipe1 > totalPontosEquipe2)) {
+      console.log('vencedor equipe 1');
       setVencedor(equipe1.nomeEquipe)
-    } else if (totalPontosEquipe2 > pontosMaximo) {
-
+    } else if ((totalPontosEquipe2 >= pontosMaximo) && (totalPontosEquipe2 > totalPontosEquipe1)) {
+      console.log('vencedor equipe 2');
       setVencedor(equipe2.nomeEquipe)
     } else {
       setVencedor('')
@@ -249,7 +250,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             vencedor
               ?
               <View>
-                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={styles.textVencedor }>{vencedor}</Text></Text>
+                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={styles.textVencedor}>{vencedor}</Text></Text>
                 <View style={{ justifyContent: 'center', flex: 1, }}>
                   <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop: 40 }}>
                     <Button
