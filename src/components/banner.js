@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import { Banner } from 'react-native-paper';
 
-const BannerComponent = () => {
-  const [visible, setVisible] = useState(true);
+const BannerComponent = (props) => {
 
   return (
     <Banner
-      visible={visible}
+      visible={props.visible}
       actions={[
         {
-          label: 'Fix it',
-          onPress: () => setVisible(false),
+          label: props.labelTextoCancelar,
+          onPress: props.onPressCancelar
         },
         {
-          label: 'Learn more',
-          onPress: () => setVisible(false),
+          label: 'ok',
+          onPress: props.onPressConfirmar,
         },
       ]}
       icon={() => (
         <Text>
-          A partida é salva automaticamente, não se preocupe com isso :)
-
+         {props.text}
         </Text>
       )}>
 

@@ -6,7 +6,6 @@ import { deletaPonto, inserePontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
-import BannerComponent from '../components/banner'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -166,7 +165,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   return (
     <>
-      <BannerComponent />
       <ScrollView contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps='handled'
       >

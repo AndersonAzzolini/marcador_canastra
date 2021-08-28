@@ -7,14 +7,17 @@ import { insereEquipes } from '../db/equipes'
 import { insereNomePartida } from '../db/partida'
 import Loader from '../components/loader'
 import { inserePontos, selecionaPontos } from '../db/pontos'
+import BannerComponent from '../components/banner'
+import { set } from 'date-fns'
+
 const NovaPartida = ({ navigation }) => {
 
   const [nomeEquipe1, setNomeEquipe1] = useState('123')
   const [nomeEquipe2, setNomeEquipe2] = useState('123')
   const [nomePartida, setNomePartida] = useState('123')
   const [loading, setLoading] = useState(false)
+  const [banner, setBanner] = useState(true)
   const [pontos, setPontos] = useState('1231')
-
   const criaPartida = async () => {
     try {
       setLoading(true)
@@ -58,47 +61,60 @@ const NovaPartida = ({ navigation }) => {
     }
   }
 
+  const naoMostraBanner = () => {
+
+    setBanner(false)
+  }
+
   return (
-    <ScrollView contentContainerStyle={styles.scroll}>
-      <Loader
-        visible={loading}
-        text='Criando partida... aguarde'
-      />
-      <View style={styles.viewInputs}>
-        <Text>Nome da partida:</Text>
-        <Input
-          label='Primeira equipe'
-          value={nomePartida}
-          onChangeText={(text) => setNomePartida(text)}
-          placeholder='Digite o nome da partida' />
-        <Text>Primeira equipe:</Text>
-        <Input
-          label='Primeira equipe'
-          value={nomeEquipe1}
-          onChangeText={(text) => setNomeEquipe1(text)}
-          placeholder='Digite o nome da primeira equipe' />
-      </View>
-      <View style={styles.viewInputs}>
-        <Text>Segunda equipe:</Text>
-        <Input
-          value={nomeEquipe2}
-          onChangeText={(text) => setNomeEquipe2(text)}
-          placeholder='Digite o nome da segunda equipe' />
-      </View>
-      <View style={styles.viewInputs}>
-        <Text>Pontos máximos:</Text>
-        <Input
-          value={pontos}
-          onChangeText={(text) => setPontos(text)}
-          keyboardType='phone-pad'
-          placeholder='Digite a pontuação máxima da partida' />
-      </View>
-      <View style={styles.viewBotoes}>
-        <Button
-          onPress={() => criaPartida()}
-          text='Criar partida' />
-      </View>
-    </ScrollView >
+    <>
+      <BannerComponent
+        text='A partida é salva automaticamente, não se preocupe com isso :)'
+        labelTextoCancelar='Não mostrar novamente'
+        onPressCancelar={() => naoMostraBanner(false)}
+        onPressConfirmar={() => setBanner(false)}
+        visible={banner} />
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <Loader
+          visible={loading}
+          text='Criando partida... aguarde'
+        />
+        <View style={styles.viewInputs}>
+          <Text>Nome da partida:</Text>
+          <Input
+            label='Primeira equipe'
+            value={nomePartida}
+            onChangeText={(text) => setNomePartida(text)}
+            placeholder='Digite o nome da partida' />
+          <Text>Primeira equipe:</Text>
+          <Input
+            label='Primeira equipe'
+            value={nomeEquipe1}
+            onChangeText={(text) => setNomeEquipe1(text)}
+            placeholder='Digite o nome da primeira equipe' />
+        </View>
+        <View style={styles.viewInputs}>
+          <Text>Segunda equipe:</Text>
+          <Input
+            value={nomeEquipe2}
+            onChangeText={(text) => setNomeEquipe2(text)}
+            placeholder='Digite o nome da segunda equipe' />
+        </View>
+        <View style={styles.viewInputs}>
+          <Text>Pontos máximos:</Text>
+          <Input
+            value={pontos}
+            onChangeText={(text) => setPontos(text)}
+            keyboardType='phone-pad'
+            placeholder='Digite a pontuação máxima da partida' />
+        </View>
+        <View style={styles.viewBotoes}>
+          <Button
+            onPress={() => criaPartida()}
+            text='Criar partida' />
+        </View>
+      </ScrollView >
+    </>
   )
 
 }
