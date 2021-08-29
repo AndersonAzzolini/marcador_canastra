@@ -14,11 +14,15 @@ const PartidasSalvas = ({ route, navigation }) => {
   const [partidas, setPartidas] = useState([])
   const [loading, setLoading] = useState(false)
 
+  useEffect(async () => {
+    await partidasSalvas()
+  }, [])
+  
   const carregarPartida = async (idPartida) => {
     let informacoesPartida = await selecionaPontos(idPartida)
+    console.log(informacoesPartida);
     let pontosEquipe1 = await selecionaPontosPorEquipe(informacoesPartida[0].idEquipe)
     let pontosEquipe2 = await selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
-    console.log(pontosEquipe1);
     informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida }) :
       Alert.alert(
         'Erro',
@@ -26,9 +30,6 @@ const PartidasSalvas = ({ route, navigation }) => {
       )
   }
 
-  useEffect(async () => {
-    await partidasSalvas()
-  }, [])
 
   const partidasSalvas = async () => {
     try {

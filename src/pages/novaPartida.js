@@ -41,15 +41,15 @@ const NovaPartida = ({ navigation }) => {
         return false
       }
 
-      let idPartida = await insereNomePartida(nomePartida, pontos)
+      const idPartida = await insereNomePartida(nomePartida, pontos)
       let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
       let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
-      await inserePontos(idEquipe1)
-      await inserePontos(idEquipe2)
+      console.log(idPartida);
+      await inserePontos(idEquipe1, 0, idPartida)
+      await inserePontos(idEquipe2, 0, idPartida)
       let informacoesPartida = await selecionaPontos(idPartida)
       let pontosEquipe1 = [{ pontos: 0 }]
       let pontosEquipe2 = [{ pontos: 0 }]
-      console.log( idPartida, idEquipe2, idEquipe1);
       informacoesPartida.length > 0 ?
         navigation.replace("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida })
         :

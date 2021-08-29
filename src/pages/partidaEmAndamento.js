@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Dimensions, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
-import { deletaPonto, inserePontos, selecionaPontos } from '../db/pontos'
+import { deletaPonto, deletaTodosPontos, inserePontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
-import { deletaPontosRodada, insereVencedorHistorico, selecionaHistorico, selecionaHistoricoVencedor } from '../db/partida'
+import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -94,11 +94,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     try {
       if (value == 1 && inputPontosEquipe1) {
         setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
-        await inserePontos(equipe1.idEquipe, inputPontosEquipe1)
+        await inserePontos(equipe1.idEquipe, inputPontosEquipe1, idPartida)
         setInputPontosEquipe1('')
       } else if (inputPontosEquipe2) {
         setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
-        await inserePontos(equipe2.idEquipe, inputPontosEquipe2)
+        await inserePontos(equipe2.idEquipe, inputPontosEquipe2, idPartida)
         setInputPontosEquipe2('')
       } else {
         showAlert()
@@ -154,14 +154,18 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setPontosEquipe1([{ pontos: 0 }])
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([...historicoVencedor])
-      // await deletaPontosRodada(equipe1.idEquipe)
+      await deletaTodosPontos(idPartida)
+      await inserePontos(equipe2.idEquipe, 0, idPartida)
+      await inserePontos(equipe1.idEquipe, 0, idPartida)
+
     } else {
-      let nomes2 = await insereVencedorHistorico(idPartida, equipe2.idEquipe)
-      console.log(nomes2);
+      await insereVencedorHistorico(idPartida, equipe2.idEquipe)
       setPontosEquipe1([{ pontos: 0 }])
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([historicoVencedor])
-      // await deletaPontosRodada(equipe2.idEquipe)
+      await deletaTodosPontos(idPartida)
+      await inserePontos(equipe2.idEquipe, 0, idPartida)
+      await inserePontos(equipe1.idEquipe, 0, idPartida)
     }
 
   }
@@ -186,7 +190,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   const buscaHistoricoVencedor = async () => {
     let nomeEquipes = await selecionaHistorico(idPartida)
-    console.log(nomeEquipes);
     setHistoricoVencedor(nomeEquipes)
   }
 

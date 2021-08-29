@@ -2,16 +2,17 @@ import DatabaseSQLite from "./db";
 
 const db = new DatabaseSQLite();
 
-const inserePontos = (idEquipe, pontos) => {
+const inserePontos = (idEquipe, pontos, idPartida) => {
+  console.log('insere pontos ' + idEquipe);
   let value = pontos ? pontos : 0
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos)
-                         VALUES ('${idEquipe}', ${value})`)
+          tx.executeSql(`INSERT INTO pontos (idEquipe, pontos, pontosUtilizados, idPartida)
+                         VALUES ('${idEquipe}', ${value}, 1, ${idPartida})`)
             .then(([tx, result]) => {
-              console.log(`inseriu na database... `, result.insertId);
+              console.log(`inseriu pontos... `, result.insertId);
               resolve(result.insertId)
             })
             .catch(err => {
@@ -38,7 +39,7 @@ const selecionaPontos = (idPartida) => {
                          FROM equipes
                          INNER JOIN pontos ON equipes.rowid = pontos.idEquipe
                          INNER JOIN partida ON equipes.idPartida = partida.rowid
-                         WHERE partida.rowid = ${idPartida}`, [], (tx, results) => {
+                         WHERE partida.rowid = ${idPartida} AND pontosUtilizados = 1`, [], (tx, results) => {
             var partidas = [];
             for (let i = 0; i < results.rows.length; ++i)
               partidas.push(results.rows.item(i));
@@ -54,13 +55,14 @@ const selecionaPontos = (idPartida) => {
 }
 
 const selecionaPontosPorEquipe = (idEquipe) => {
+  console.log('oi');
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
           tx.executeSql(`SELECT pontos
                          FROM pontos
-                         WHERE idEquipe = ${idEquipe}`, [], (tx, results) => {
+                         WHERE idEquipe = ${idEquipe} AND pontosUtilizados = 1`, [], (tx, results) => {
             var pontosEquipe = [];
             for (let i = 0; i < results.rows.length; ++i)
               pontosEquipe.push(results.rows.item(i));
@@ -83,7 +85,7 @@ const deletaPonto = (idEquipe) => {
           tx.executeSql(`DELETE FROM pontos 
                          WHERE ROWID = (SELECT MAX(ROWID) FROM pontos WHERE idEquipe = ${idEquipe})`)
             .then(([tx, result]) => {
-              console.log(`deletou da base... `, result.insertId);
+              console.log(`deletou da base... `, results.rows.item(i));
               resolve(result.insertId)
             })
             .catch(err => {
@@ -98,16 +100,17 @@ const deletaPonto = (idEquipe) => {
   });
 }
 
-const deletaTodosPontos = (idEquipe) => {
+const deletaTodosPontos = (idPartida) => {
   return new Promise(resolve => {
     db.criaDataBase()
       .then(db => {
         db.transaction(tx => {
-          tx.executeSql(`DELETE FROM pontos 
-                         WHERE idEquipe = ${idEquipe})`)
-            .then(([tx, result]) => {
-              console.log(`deletou da base... `, result.insertId);
-              resolve(result.insertId)
+          tx.executeSql(`UPDATE pontos
+                         SET pontosUtilizados = 0
+                         WHERE idPartida= ${idPartida}`)
+            .then(([tx, results]) => {
+              console.log('update em tudo' +results);
+              resolve(results)
             })
             .catch(err => {
               resolve(null);
