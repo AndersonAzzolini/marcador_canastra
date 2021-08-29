@@ -12,15 +12,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('')
-  const [nomeEquipe2, setNomeEquipe2] = useState('')
-  const [nomePartida, setNomePartida] = useState('')
+  const [nomeEquipe1, setNomeEquipe1] = useState('1')
+  const [nomeEquipe2, setNomeEquipe2] = useState('12')
+  const [nomePartida, setNomePartida] = useState('1')
   const [loading, setLoading] = useState(false)
-  const [banner, setBanner] = useState(false)
-  const [pontos, setPontos] = useState('')
+  const [banner, setBanner] = useState(true)
+  const [pontos, setPontos] = useState('1')
+
   useEffect(() => {
     verificaBanner()
   })
+
   const criaPartida = async () => {
     try {
       setLoading(true)
@@ -47,15 +49,14 @@ const NovaPartida = ({ navigation }) => {
       let informacoesPartida = await selecionaPontos(idPartida)
       let pontosEquipe1 = [{ pontos: 0 }]
       let pontosEquipe2 = [{ pontos: 0 }]
+      console.log( idPartida, idEquipe2, idEquipe1);
       informacoesPartida.length > 0 ?
-        navigation.replace("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2 })
+        navigation.replace("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida })
         :
         Alert.alert(
           'Erro',
           'Problema ao criar partida..'
         )
-
-      console.log('inseriu tudo', idPartida, idEquipe1, idEquipe2)
     } catch (e) {
       console.log(e)
 

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Dimensions, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
-import { deletaPonto, inserePontos } from '../db/pontos'
+import { deletaPonto, inserePontos, selecionaPontos } from '../db/pontos'
 import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
+import { deletaPontosRodada, insereVencedorHistorico, selecionaHistorico, selecionaHistoricoVencedor } from '../db/partida'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
   const [pontosEquipe2, setPontosEquipe2] = useState(route.params.pontosEquipe2)
-  const [historicoVencedor, setHistoricoVencedor]=useState()
+  const [historicoVencedor, setHistoricoVencedor] = useState([])
   const [totalPontosEquipe1, setTotalPontosEquipe1] = useState(0)
   const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
@@ -21,6 +22,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
   const equipe2 = route.params.informacoesPartida[1]
+  const idPartida = route.params.idPartida
+
+  useEffect(async () => {
+    await buscaHistoricoVencedor()
+  }, [totalPontosEquipe1, totalPontosEquipe2])
 
   useEffect(() => {
     navigation.setOptions({
@@ -40,6 +46,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   useEffect(() => {
     comparaPontuação()
   }, [totalPontosEquipe1, totalPontosEquipe2])
+
+
 
   const showAlert = () => {
     Alert.alert(
@@ -140,9 +148,21 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     }
   }
 
-  const confirmacaoRecomecarPartida = () => {
-    setPontosEquipe1([{ pontos: 0 }])
-    setPontosEquipe2([{ pontos: 0 }])
+  const confirmacaoRecomecarPartida = async () => {
+    if (totalPontosEquipe1 > totalPontosEquipe2) {
+      await insereVencedorHistorico(idPartida, equipe1.idEquipe)
+      setPontosEquipe1([{ pontos: 0 }])
+      setPontosEquipe2([{ pontos: 0 }])
+      setHistoricoVencedor([...historicoVencedor])
+      // await deletaPontosRodada(equipe1.idEquipe)
+    } else {
+      let nomes2 = await insereVencedorHistorico(idPartida, equipe2.idEquipe)
+      console.log(nomes2);
+      setPontosEquipe1([{ pontos: 0 }])
+      setPontosEquipe2([{ pontos: 0 }])
+      setHistoricoVencedor([historicoVencedor])
+      // await deletaPontosRodada(equipe2.idEquipe)
+    }
 
   }
 
@@ -158,10 +178,16 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         },
         {
           text: "Sim",
-          onPress: () => confirmacaoRecomecarPartida()
+          onPress: async () => await confirmacaoRecomecarPartida()
         }
       ]
     )
+  }
+
+  const buscaHistoricoVencedor = async () => {
+    let nomeEquipes = await selecionaHistorico(idPartida)
+    console.log(nomeEquipes);
+    setHistoricoVencedor(nomeEquipes)
   }
 
   return (
@@ -243,10 +269,21 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         </View>
         <View style={{
           flex: 1,
-          marginTop: 35,
+          marginTop: 50,
           minHeight: Dimensions.get('window').height * 0.25,
         }}>
-          <Text style={{ fontSize: 16, marginTop: 40, }}>Pontos para vencer: {pontosMaximo}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Pontos para vencer: {pontosMaximo}</Text>
+            <Text style={{ textAlign: 'left', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>Histórico vitórias:</Text>
+            {historicoVencedor.map((index, posicao) => {
+
+              return (
+                <View >
+                  <Text style={{ textAlign: 'left' }}>{posicao + 1}ª rodada: {index.nome}  </Text>
+                </View>
+              )
+            })}
+          </View>
           {
             vencedor
               ?
@@ -267,7 +304,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
               </View>
               :
               null
-
           }
         </View>
       </ScrollView>

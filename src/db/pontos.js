@@ -98,4 +98,27 @@ const deletaPonto = (idEquipe) => {
   });
 }
 
-export { selecionaPontos, inserePontos, selecionaPontosPorEquipe, deletaPonto }
+const deletaTodosPontos = (idEquipe) => {
+  return new Promise(resolve => {
+    db.criaDataBase()
+      .then(db => {
+        db.transaction(tx => {
+          tx.executeSql(`DELETE FROM pontos 
+                         WHERE idEquipe = ${idEquipe})`)
+            .then(([tx, result]) => {
+              console.log(`deletou da base... `, result.insertId);
+              resolve(result.insertId)
+            })
+            .catch(err => {
+              resolve(null);
+            });;
+        }).catch(err => {
+          console.log(err);
+        });
+      }).catch(err => {
+        console.log(err);
+      });
+  });
+}
+
+export { selecionaPontos, inserePontos, selecionaPontosPorEquipe, deletaPonto, deletaTodosPontos }

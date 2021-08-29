@@ -13,7 +13,8 @@ const selecionaNomePartidas = () => {
                                 GROUP_CONCAT(equipes.nome) as nomeEquipes
                          FROM partida
                          INNER JOIN equipes ON equipes.idPartida = partida.ROWID
-                         GROUP BY partida.ROWID
+                         GROUP BY partida.ROWID 
+                         ORDER BY partida.ROWID DESC
                          `, [], (tx, results) => {
             var partidas = [];
             for (let i = 0; i < results.rows.length; ++i)

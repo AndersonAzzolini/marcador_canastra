@@ -90,6 +90,7 @@ export default class DatabaseSQLite {
                     //TABLES
                     tx.executeSql(`CREATE TABLE IF NOT EXISTS pontos( pontos INTEGER, 
                                                                       idEquipe INTEGER,
+                                                                      pontosUtilizados INTEGER,
                     FOREIGN KEY(idEquipe) REFERENCES equipes(ROWID))`);
 
                   })
