@@ -12,8 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('')
-  const [nomeEquipe2, setNomeEquipe2] = useState('')
+  const [nomeEquipe1, setNomeEquipe1] = useState('Equipe 1')
+  const [nomeEquipe2, setNomeEquipe2] = useState('Equipe 2')
   const [nomePartida, setNomePartida] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(true)
@@ -26,10 +26,10 @@ const NovaPartida = ({ navigation }) => {
   const criaPartida = async () => {
     try {
       setLoading(true)
-      if (!nomeEquipe1 || !nomeEquipe2 || !pontos || !nomePartida) {
+      if (!pontos || !nomePartida || !nomeEquipe1 || !nomeEquipe2) {
         Alert.alert(
           'Erro',
-          'Preencha todos os campos, por favor'
+          'É necessário informar todos os campos obrigatórios'
         )
         return false
       }
@@ -40,7 +40,6 @@ const NovaPartida = ({ navigation }) => {
         )
         return false
       }
-
       const idPartida = await insereNomePartida(nomePartida, pontos)
       let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
       let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
@@ -89,15 +88,17 @@ const NovaPartida = ({ navigation }) => {
         onPressCancelar={() => naoMostraBanner()}
         onPressConfirmar={() => setBanner(false)}
         visible={banner} />
+      <Loader
+        visible={loading}
+        text='Criando partida... aguarde'
+      />
       <ScrollView contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps='handled'
       >
-        <Loader
-          visible={loading}
-          text='Criando partida... aguarde'
-        />
+
         <View style={styles.viewInputs}>
-          <Text>Nome da partida:</Text>
+          <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>Campos obrigatórios marcados com *</Text>
+          <Text>Nome da partida *:</Text>
           <Input
             label='Primeira equipe'
             value={nomePartida}
@@ -108,17 +109,17 @@ const NovaPartida = ({ navigation }) => {
             label='Primeira equipe'
             value={nomeEquipe1}
             onChangeText={(text) => setNomeEquipe1(text)}
-            placeholder='Digite o nome da primeira equipe' />
+            placeholder='Nome da primeira equipe' />
         </View>
         <View style={styles.viewInputs}>
           <Text>Segunda equipe:</Text>
           <Input
             value={nomeEquipe2}
             onChangeText={(text) => setNomeEquipe2(text)}
-            placeholder='Digite o nome da segunda equipe' />
+            placeholder='Nome da segunda equipe' />
         </View>
         <View style={styles.viewInputs}>
-          <Text>Pontos máximos:</Text>
+          <Text>Pontos máximos *:</Text>
           <Input
             value={pontos}
             onChangeText={(text) => setPontos(text)}

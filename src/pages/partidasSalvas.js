@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, Alert, ActivityIndicator } from 'react-native';
 import Button from '../components/button';
+import Loader from '../components/loader';
 import { selecionaNomePartidas } from '../db/equipes';
 import { selecionaPontos, selecionaPontosPorEquipe } from '../db/pontos';
 import { styles } from './styles/partidasSalvas';
@@ -13,21 +14,29 @@ import {
 const PartidasSalvas = ({ route, navigation }) => {
   const [partidas, setPartidas] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingLoaderPartidas, setLoadingLoaderPartidas] = useState(false)
 
   useEffect(async () => {
     await partidasSalvas()
   }, [])
-  
+
   const carregarPartida = async (idPartida) => {
-    let informacoesPartida = await selecionaPontos(idPartida)
-    console.log(informacoesPartida);
-    let pontosEquipe1 = await selecionaPontosPorEquipe(informacoesPartida[0].idEquipe)
-    let pontosEquipe2 = await selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
-    informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida }) :
-      Alert.alert(
-        'Erro',
-        'Erro ao carregar partida'
-      )
+    setLoadingLoaderPartidas(true)
+    try {
+      let informacoesPartida = await selecionaPontos(idPartida)
+      console.log(informacoesPartida);
+      let pontosEquipe1 = await selecionaPontosPorEquipe(informacoesPartida[0].idEquipe)
+      let pontosEquipe2 = await selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
+      informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida }) :
+        Alert.alert(
+          'Erro',
+          'Erro ao carregar partida'
+        )
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingLoaderPartidas(false)
+    }
   }
 
 
@@ -60,40 +69,46 @@ const PartidasSalvas = ({ route, navigation }) => {
       <Text style={[styles.text, styles.textActivityIndicator]}> Carregando partidas...</Text>
     </View>
     :
-    <ScrollView contentContainerStyle={styles.scroll}>
-      {partidas.length > 0 ?
-        partidas.map((partidas, indice) => {
-          return (
-            <View>
+    <>
+      <Loader
+        visible={loadingLoaderPartidas}
+        text='Carregando partida... aguarde'
+      />
+      <ScrollView contentContainerStyle={styles.scroll}>
+        {partidas.length > 0 ?
+          partidas.map((partidas, indice) => {
+            return (
+              <View>
+                <Button
+                  textData={format(
+                    parseISO(partidas.criadoEm),
+                    'dd/MM/yyyy'
+                  )}
+                  textVencedor=''
+                  textNomeEquipes={partidas.nomeEquipes.replace(',', ' vs ')}
+                  styleText={styles.textButton}
+                  text={partidas.nome}
+                  style={styles.botao}
+                  onPress={() => carregarPartida(partidas.rowid)}
+                />
+              </View>
+            )
+          })
+          :
+          <ScrollView contentContainerStyle={styles.scroll}>
+            <View style={styles.viewSemPartida}>
+              <Text style={styles.text}>Nenhuma partida criada...</Text>
+            </View>
+            <View style={styles.viewBotaoSemPartida}>
               <Button
-                textData={format(
-                  parseISO(partidas.criadoEm),
-                  'dd/MM/yyyy'
-                )}
-                textVencedor=''
-                textNomeEquipes={partidas.nomeEquipes.replace(',', ' vs ')}
-                styleText={styles.textButton}
-                text={partidas.nome}
-                style={styles.botao}
-                onPress={() => carregarPartida(partidas.rowid)}
+                text='Criar partida'
+                onPress={() => navigation.navigate('Nova Partida')}
               />
             </View>
-          )
-        })
-        :
-        <ScrollView contentContainerStyle={styles.scroll}>
-          <View style={styles.viewSemPartida}>
-            <Text style={styles.text}>Nenhuma partida criada...</Text>
-          </View>
-          <View style={styles.viewBotaoSemPartida}>
-            <Button
-              text='Criar partida'
-              onPress={() => navigation.navigate('Nova Partida')}
-            />
-          </View>
-        </ScrollView>
-      }
-    </ScrollView>
+          </ScrollView>
+        }
+      </ScrollView>
+    </>
 }
 
 export default PartidasSalvas
