@@ -12,12 +12,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('1')
-  const [nomeEquipe2, setNomeEquipe2] = useState('12')
-  const [nomePartida, setNomePartida] = useState('1')
+  const [nomeEquipe1, setNomeEquipe1] = useState('')
+  const [nomeEquipe2, setNomeEquipe2] = useState('')
+  const [nomePartida, setNomePartida] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(true)
-  const [pontos, setPontos] = useState('1')
+  const [pontos, setPontos] = useState('')
 
   useEffect(() => {
     verificaBanner()

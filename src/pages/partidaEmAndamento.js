@@ -155,8 +155,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([...historicoVencedor])
       await deletaTodosPontos(idPartida)
-      await inserePontos(equipe2.idEquipe, 0, idPartida)
       await inserePontos(equipe1.idEquipe, 0, idPartida)
+      await inserePontos(equipe2.idEquipe, 0, idPartida)
 
     } else {
       await insereVencedorHistorico(idPartida, equipe2.idEquipe)
@@ -164,8 +164,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([historicoVencedor])
       await deletaTodosPontos(idPartida)
-      await inserePontos(equipe2.idEquipe, 0, idPartida)
       await inserePontos(equipe1.idEquipe, 0, idPartida)
+      await inserePontos(equipe2.idEquipe, 0, idPartida)
     }
 
   }
