@@ -3,26 +3,11 @@ import Button from '../components/button'
 import { View, Image, Dimensions } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
-import { selecionaNomePartidas } from '../db/equipes'
 import Loader from '../components/loader'
 const Inicio = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false)
   const db = new DatabaseSQLite()
-
-  const partidasSalvas = async () => {
-    try {
-      setLoading(true)
-      let partidas = await selecionaNomePartidas()
-      console.log(partidas);
-      navigation.navigate("Partidas Salvas", partidas);
-
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false })

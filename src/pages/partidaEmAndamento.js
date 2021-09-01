@@ -270,19 +270,14 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             </View>
           </View>
         </View>
-        <View style={{
-          flex: 1,
-          marginTop: 50,
-          minHeight: Dimensions.get('window').height * 0.25,
-        }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Pontos para vencer: {pontosMaximo}</Text>
-            <Text style={{ textAlign: 'left', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>Histórico vitórias:</Text>
+        <View style={styles.viewInformacoesPartida}>
+          <View >
+            <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
+            <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias:</Text>
             {historicoVencedor.map((index, posicao) => {
-
               return (
                 <View >
-                  <Text style={{ textAlign: 'left' }}>{posicao + 1}ª rodada: {index.nome}  </Text>
+                  <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
                 </View>
               )
             })}
@@ -291,9 +286,9 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             vencedor
               ?
               <View>
-                <Text style={{ marginTop: 15, fontSize: 16 }}>Vencedor atual: <Text style={styles.textVencedor}>{vencedor}</Text></Text>
-                <View style={{ justifyContent: 'center', flex: 1, }}>
-                  <View style={{ justifyContent: 'space-evenly', marginBottom: 15, marginTop: 40 }}>
+                <Text style={styles.textVencedor}>Vencedor atual: <Text style={styles.textVencedor}>{vencedor}</Text></Text>
+                <View >
+                  <View style={styles.viewBotoesRecomecar}>
                     <Button
                       style={styles.botao}
                       onPress={() => recomecaPartida()}

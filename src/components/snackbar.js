@@ -8,7 +8,8 @@ const SnackbarComponent = ({ ...props }) => {
   return (
     <View style={styles.container}>
       <Snackbar
-        style={styles.snackBar}
+      
+        style={[styles.snackBar, props.style]}
         duration={2500}
         visible={props.visible}
         onDismiss={props.onDismissSnackBar}

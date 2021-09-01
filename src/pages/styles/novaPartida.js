@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingBottom: 30
   },
+  textBold: {
+    marginBottom: 10,
+    fontWeight: "bold"
+  },
 
 })
 export { styles }

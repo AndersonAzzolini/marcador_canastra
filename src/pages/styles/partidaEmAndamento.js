@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingHorizontal: 20,
   },
+  viewInformacoesPartida: {
+    flex: 1,
+    marginTop: 50,
+    minHeight: Dimensions.get('window').height * 0.25,
+  }
+  ,
   viewPontos: {
     paddingTop: 30,
     flexDirection: 'row',
@@ -20,6 +26,11 @@ const styles = StyleSheet.create({
   viewIcons: {
     marginTop: 15,
     justifyContent: 'center',
+  },
+  viewBotoesRecomecar: {
+    justifyContent: 'space-evenly',
+    marginBottom: 15,
+    marginTop: 40
   },
   text: {
     fontSize: 22,
@@ -39,7 +50,19 @@ const styles = StyleSheet.create({
   textVencedor: {
     color: Cores.verdeEscuro,
     fontSize: 25,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginTop:20
+  },
+  textBold: {
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  textHistorico: {
+    marginTop: 10,
+    textAlign: 'left'
+  },
+  textRodadas: {
+    textAlign: 'left'
   },
   botao: {
     borderRadius: 10,

@@ -12,8 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NovaPartida = ({ navigation }) => {
 
-  const [nomeEquipe1, setNomeEquipe1] = useState('Equipe 1')
-  const [nomeEquipe2, setNomeEquipe2] = useState('Equipe 2')
+  const [nomeEquipe1, setNomeEquipe1] = useState('')
+  const [nomeEquipe2, setNomeEquipe2] = useState('')
   const [nomePartida, setNomePartida] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(true)
@@ -97,7 +97,7 @@ const NovaPartida = ({ navigation }) => {
       >
 
         <View style={styles.viewInputs}>
-          <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>Campos obrigatórios marcados com *</Text>
+          <Text style={styles.textBold}>Campos obrigatórios marcados com *</Text>
           <Text>Nome da partida *:</Text>
           <Input
             label='Primeira equipe'
@@ -109,14 +109,14 @@ const NovaPartida = ({ navigation }) => {
             label='Primeira equipe'
             value={nomeEquipe1}
             onChangeText={(text) => setNomeEquipe1(text)}
-            placeholder='Nome da primeira equipe' />
+            placeholder='Equipe 1' />
         </View>
         <View style={styles.viewInputs}>
           <Text>Segunda equipe:</Text>
           <Input
             value={nomeEquipe2}
             onChangeText={(text) => setNomeEquipe2(text)}
-            placeholder='Nome da segunda equipe' />
+            placeholder='Equipe 2' />
         </View>
         <View style={styles.viewInputs}>
           <Text>Pontos máximos *:</Text>
@@ -134,7 +134,6 @@ const NovaPartida = ({ navigation }) => {
       </ScrollView >
     </>
   )
-
 }
 
 export default NovaPartida
