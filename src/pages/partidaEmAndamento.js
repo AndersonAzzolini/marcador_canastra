@@ -7,6 +7,8 @@ import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
 import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
+import { MotiView } from 'moti'
+import 'react-native-reanimated'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -220,16 +222,42 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   placeholder='Pontos a adicionar' />
               </View>
               <View style={styles.viewIcons}>
-                <Button
-                  text='Adicionar ponto'
-                  onPress={() => adicionaPontoEquipe(1)}
-                  style={styles.botao}
-                />
-                <Button
-                  onPress={() => confirmacaoRemoverPonto(1)}
-                  text='Remover ponto'
-                  style={styles.botaoExcluir}
-                />
+                <MotiView
+                  from={{
+                    translateY: -250
+                  }}
+                  animate={{
+                    translateY: 0
+                  }}
+                  transition={{
+                    duration: 1200,
+                    type: 'timing'
+                  }}
+                >
+                  <Button
+                    text='Adicionar ponto'
+                    onPress={() => adicionaPontoEquipe(1)}
+                    style={styles.botao}
+                  />
+                </MotiView>
+                <MotiView
+                  from={{
+                    translateY: -250
+                  }}
+                  animate={{
+                    translateY: 0
+                  }}
+                  transition={{
+                    duration: 1000,
+                    type: 'timing'
+                  }}
+                >
+                  <Button
+                    onPress={() => confirmacaoRemoverPonto(1)}
+                    text='Remover ponto'
+                    style={styles.botaoExcluir}
+                  />
+                </MotiView>
               </View>
             </View>
           </View>
@@ -257,17 +285,42 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 placeholder='Pontos a adicionar' />
             </View>
             <View style={styles.viewIcons}>
-              <Button
-                text='Adicionar ponto'
-                onPress={() => adicionaPontoEquipe()}
-                style={styles.botao}
-              />
-              <Button
-                text='Remover ponto'
-                onPress={() => confirmacaoRemoverPonto()}
-                style={styles.botaoExcluir}
-              />
+              <MotiView
+                from={{
+                  translateY: -250
+                }}
+                animate={{
+                  translateY: 0
+                }}
+                transition={{
+                  duration: 1600,
+                  type: 'timing'
+                }}>
+                <Button
+                  text='Adicionar ponto'
+                  onPress={() => adicionaPontoEquipe()}
+                  style={styles.botao}
+                />
+              </MotiView>
+              <MotiView
+                from={{
+                  translateY: -250
+                }}
+                animate={{
+                  translateY: 0
+                }}
+                transition={{
+                  duration: 1400,
+                  type: 'timing'
+                }}>
+                <Button
+                  text='Remover ponto'
+                  onPress={() => confirmacaoRemoverPonto()}
+                  style={styles.botaoExcluir}
+                />
+              </MotiView>
             </View>
+
           </View>
         </View>
         <View style={styles.viewInformacoesPartida}>

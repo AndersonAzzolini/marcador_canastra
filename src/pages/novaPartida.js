@@ -26,7 +26,7 @@ const NovaPartida = ({ navigation }) => {
   const criaPartida = async () => {
     try {
       setLoading(true)
-      if (!pontos || !nomePartida || !nomeEquipe1 || !nomeEquipe2) {
+      if (!pontos || !nomePartida) {
         Alert.alert(
           'Erro',
           'É necessário informar todos os campos obrigatórios'
