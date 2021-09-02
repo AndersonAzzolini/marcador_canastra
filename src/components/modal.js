@@ -1,9 +1,7 @@
 import { Text, View, StyleSheet, Modal, Dimensions } from 'react-native'
 import React from 'react'
 import Cores from "../assets/cores.json";
-import { MotiView } from 'moti';
 import Button from './button'
-import 'react-native-reanimated'
 
 const ModalComponent = (props) => {
   return (
@@ -11,11 +9,11 @@ const ModalComponent = (props) => {
       transparent
     >
       <View style={styles.container}>
-        <MotiView style={styles.viewTitulo}>
+        <View style={styles.viewTitulo}>
           <Text style={styles.text}>Parece que temos um vencedor</Text>
           <Text style={styles.textVencedor}>{props.nomeEquipeVencedora}</Text>
-        </MotiView>
-        <MotiView style={styles.viewTitulo}>
+        </View>
+        <View style={styles.viewTitulo}>
           <Button
             style={[styles.button, styles.buttonAdicionaPontoEquipe]}
             text={`Adicionar pontos de ${props.nomeEquipePerdedora}`}
@@ -24,7 +22,7 @@ const ModalComponent = (props) => {
             style={styles.button}
             text='Atribuir vitória'
             onPress={props.onPress} />
-        </MotiView>
+        </View>
 
       </View>
     </Modal >

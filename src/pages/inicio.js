@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../components/button'
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, Image } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
 import Loader from '../components/loader'
-import { MotiImage } from 'moti'
-import 'react-native-reanimated'
 import ImageTeeste from '../assets/img/teste.png'
 const Inicio = ({ navigation }) => {
 
@@ -28,27 +26,9 @@ const Inicio = ({ navigation }) => {
         text='Carregando partidas salvas.. Aguarde'
       />
       <View style={styles.viewLogo}>
-        <MotiImage
-          from={{
-            opacity: 0,
-            translateY: -100
-          }}
-          animate={{
-            opacity: 1,
-            translateY: 0,
-
-          }}
-          transition={{
-            type: 'timing',
-            duration: 2500
-          }}
-          style={{
-            maxHeight: Dimensions.get('window').height * 0.6,
-            maxWidth: Dimensions.get('window').width
-          }}
+        <Image
           source={ImageTeeste}
         />
-
       </View>
       <View style={styles.viewBotoes}>
         <Button

@@ -7,8 +7,6 @@ import Input from '../components/input'
 import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
 import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
-import { MotiView } from 'moti'
-import 'react-native-reanimated'
 import ModalComponent from '../components/modal'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
@@ -253,44 +251,18 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   placeholder='Pontos a adicionar' />
               </View>
               <View style={styles.viewIcons}>
-                <MotiView
-                  from={{
-                    translateY: -250
-                  }}
-                  animate={{
-                    translateY: 0
-                  }}
-                  transition={{
-                    duration: 1200,
-                    type: 'timing'
-                  }}
-                >
-                  <Button
-                    disabled={btnEquipe1}
-                    text='Adicionar ponto'
-                    onPress={() => adicionaPontoEquipe(1)}
-                    style={styles.botao}
-                  />
-                </MotiView>
-                <MotiView
-                  from={{
-                    translateY: -250
-                  }}
-                  animate={{
-                    translateY: 0
-                  }}
-                  transition={{
-                    duration: 1000,
-                    type: 'timing'
-                  }}
-                >
-                  <Button
-                    disabled={btnEquipe1}
-                    onPress={() => confirmacaoRemoverPonto(1)}
-                    text='Remover ponto'
-                    style={styles.botaoExcluir}
-                  />
-                </MotiView>
+                <Button
+                  disabled={btnEquipe1}
+                  text='Adicionar ponto'
+                  onPress={() => adicionaPontoEquipe(1)}
+                  style={styles.botao}
+                />
+                <Button
+                  disabled={btnEquipe1}
+                  onPress={() => confirmacaoRemoverPonto(1)}
+                  text='Remover ponto'
+                  style={styles.botaoExcluir}
+                />
               </View>
             </View>
           </View>
@@ -318,44 +290,19 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 placeholder='Pontos a adicionar' />
             </View>
             <View style={styles.viewIcons}>
-              <MotiView
-                from={{
-                  translateY: -250
-                }}
-                animate={{
-                  translateY: 0
-                }}
-                transition={{
-                  duration: 1600,
-                  type: 'timing'
-                }}>
-                <Button
-                  disabled={btnEquipe2}
-                  text='Adicionar ponto'
-                  onPress={() => adicionaPontoEquipe()}
-                  style={styles.botao}
-                />
-              </MotiView>
-              <MotiView
-                from={{
-                  translateY: -250
-                }}
-                animate={{
-                  translateY: 0
-                }}
-                transition={{
-                  duration: 1400,
-                  type: 'timing'
-                }}>
-                <Button
-                  disabled={btnEquipe2}
-                  text='Remover ponto'
-                  onPress={() => confirmacaoRemoverPonto()}
-                  style={styles.botaoExcluir}
-                />
-              </MotiView>
+              <Button
+                disabled={btnEquipe2}
+                text='Adicionar ponto'
+                onPress={() => adicionaPontoEquipe()}
+                style={styles.botao}
+              />
+              <Button
+                disabled={btnEquipe2}
+                text='Remover ponto'
+                onPress={() => confirmacaoRemoverPonto()}
+                style={styles.botaoExcluir}
+              />
             </View>
-
           </View>
         </View>
         <View style={styles.viewInformacoesPartida}>
