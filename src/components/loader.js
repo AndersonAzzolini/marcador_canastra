@@ -1,12 +1,11 @@
 import { Text, View, StyleSheet, Modal, ActivityIndicator, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import Cores from "../assets/cores.json";
-import { Chase } from 'react-native-animated-spinkit'
 
 const Loader = (props) => {
   return (
     <Modal visible={props.visible}
-      transparent={true}
+      transparent
     >
       <View style={styles.container}>
         <ActivityIndicator

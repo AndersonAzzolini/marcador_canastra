@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#36D948'
   },
-  textVencedor: {
-    color: Cores.verdeEscuro,
-    fontSize: 25,
+  textPerdedor: {
+    color: '#FA5A46',
+    fontSize: 20,
     fontWeight: 'bold',
-    marginTop:20
+    marginVertical: 20
   },
   textBold: {
     fontWeight: 'bold',

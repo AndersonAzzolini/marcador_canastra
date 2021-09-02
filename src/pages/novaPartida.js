@@ -41,8 +41,8 @@ const NovaPartida = ({ navigation }) => {
         return false
       }
       const idPartida = await insereNomePartida(nomePartida, pontos)
-      let idEquipe1 = await insereEquipes(nomeEquipe1, idPartida)
-      let idEquipe2 = await insereEquipes(nomeEquipe2, idPartida)
+      let idEquipe1 = await insereEquipes(nomeEquipe1 || 'Equipe 1', idPartida)
+      let idEquipe2 = await insereEquipes(nomeEquipe2 || 'Equipe 2', idPartida)
       console.log(idPartida);
       await inserePontos(idEquipe1, 0, idPartida)
       await inserePontos(idEquipe2, 0, idPartida)

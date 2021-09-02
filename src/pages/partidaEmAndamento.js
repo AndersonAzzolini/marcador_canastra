@@ -9,6 +9,7 @@ import SnackbarComponent from '../components/snackbar'
 import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
 import { MotiView } from 'moti'
 import 'react-native-reanimated'
+import ModalComponent from '../components/modal'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -19,7 +20,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
   const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
   const [vencedor, setVencedor] = useState('')
+  const [perdedor, setPerdedor] = useState('')
+  const [btnEquipe1, setBtnEquipe1] = useState(false)
+  const [btnEquipe2, setBtnEquipe2] = useState(false)
   const [snackbarVisible, setSnackbarVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
@@ -58,13 +63,34 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     )
   }
 
+  const ultimaPontucao = async () => {
+    try {
+      if (totalPontosEquipe1 > totalPontosEquipe2) {
+        setBtnEquipe1(true)
+        setModalVisible(false)
+      } else {
+        console.log('tamo ai');
+        setModalVisible(false)
+        setBtnEquipe2(true)
+      }
+    } catch (error) {
+
+    } finally {
+
+    }
+  }
+
   const comparaPontuação = () => {
     if ((totalPontosEquipe1 >= pontosMaximo) && (totalPontosEquipe1 > totalPontosEquipe2)) {
       console.log('vencedor equipe 1');
+      setModalVisible(true)
       setVencedor(equipe1.nomeEquipe)
+      setPerdedor(equipe2.nomeEquipe)
     } else if ((totalPontosEquipe2 >= pontosMaximo) && (totalPontosEquipe2 > totalPontosEquipe1)) {
       console.log('vencedor equipe 2');
+      setModalVisible(true)
       setVencedor(equipe2.nomeEquipe)
+      setPerdedor(equipe1.nomeEquipe)
     } else {
       setVencedor('')
     }
@@ -169,7 +195,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       await inserePontos(equipe1.idEquipe, 0, idPartida)
       await inserePontos(equipe2.idEquipe, 0, idPartida)
     }
-
   }
 
   const recomecaPartida = () => {
@@ -197,6 +222,12 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   return (
     <>
+      <ModalComponent
+        onPressAdicionaUltimoPonto={ultimaPontucao}
+        visible={modalVisible}
+        nomeEquipeVencedora={vencedor}
+        nomeEquipePerdedora={perdedor}
+      />
       <ScrollView contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps='handled'
       >
@@ -235,6 +266,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   }}
                 >
                   <Button
+                    disabled={btnEquipe1}
                     text='Adicionar ponto'
                     onPress={() => adicionaPontoEquipe(1)}
                     style={styles.botao}
@@ -253,6 +285,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   }}
                 >
                   <Button
+                    disabled={btnEquipe1}
                     onPress={() => confirmacaoRemoverPonto(1)}
                     text='Remover ponto'
                     style={styles.botaoExcluir}
@@ -297,6 +330,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   type: 'timing'
                 }}>
                 <Button
+                  disabled={btnEquipe2}
                   text='Adicionar ponto'
                   onPress={() => adicionaPontoEquipe()}
                   style={styles.botao}
@@ -314,6 +348,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   type: 'timing'
                 }}>
                 <Button
+                  disabled={btnEquipe2}
                   text='Remover ponto'
                   onPress={() => confirmacaoRemoverPonto()}
                   style={styles.botaoExcluir}
@@ -325,6 +360,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         </View>
         <View style={styles.viewInformacoesPartida}>
           <View >
+            {
+              vencedor
+                ?
+                <Text style={styles.textPerdedor}>Adicione os pontos de <Text style={styles.textVencedor}>{perdedor}</Text></Text>
+                :
+                null
+            }
             <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
             <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias:</Text>
             {historicoVencedor.map((index, posicao) => {
@@ -339,7 +381,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             vencedor
               ?
               <View>
-                <Text style={styles.textVencedor}>Vencedor atual: <Text style={styles.textVencedor}>{vencedor}</Text></Text>
                 <View >
                   <View style={styles.viewBotoesRecomecar}>
                     <Button
@@ -358,7 +399,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           }
         </View>
       </ScrollView>
-
       <SnackbarComponent
         onDismissSnackBar={() => setSnackbarVisible(false)}
         visible={snackbarVisible}
