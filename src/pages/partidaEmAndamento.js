@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Dimensions, ScrollView, Text, View } from 'react-native'
+import { Alert, ScrollView, Text, View } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, deletaTodosPontos, inserePontos } from '../db/pontos'
@@ -51,8 +51,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   useEffect(() => {
     comparaPontuação()
   }, [totalPontosEquipe1, totalPontosEquipe2])
-
-
 
   const showAlert = () => {
     Alert.alert(
@@ -119,13 +117,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const adicionaPontoEquipe = async (value) => {
     try {
       if (value == 1 && inputPontosEquipe1) {
-        setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
-        await inserePontos(equipe1.idEquipe, inputPontosEquipe1, idPartida)
         setInputPontosEquipe1('')
+        setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
+        setInputPontosEquipe2('')
+        await inserePontos(equipe1.idEquipe, inputPontosEquipe1, idPartida)
       } else if (inputPontosEquipe2) {
         setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
         await inserePontos(equipe2.idEquipe, inputPontosEquipe2, idPartida)
-        setInputPontosEquipe2('')
       } else {
         showAlert()
       }

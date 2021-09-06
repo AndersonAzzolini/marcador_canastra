@@ -1,32 +1,34 @@
-import { Text, TouchableOpacity, Image, StyleSheet, View, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import { Text, TouchableOpacity, StyleSheet, View, Dimensions } from 'react-native'
+import React from 'react'
 import Cores from "../assets/cores.json";
 
 
 
-const Button = (props) => {
-  return (<TouchableOpacity
-    disabled={props.disabled}
-    activeOpacity={.5}
-    style={[buttonStyles.btn, props.style, props.disabled && buttonStyles.btnDisabled]}
-    onPress={props.onPress}>
-    {
-      props.textData ?
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={buttonStyles.viewNomePartida}>
-            <Text style={props.styleText}>{props.text}</Text>
-          </View>
+const Button = ({ disabled, style, styleText, text, textData, textNomeEquipes, onPress }) => {
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      activeOpacity={.5}
+      style={[buttonStyles.btn, style, disabled && buttonStyles.btnDisabled]}
+      onPress={onPress}>
 
-          <View style={buttonStyles.viewDadosPartida}>
-            <Text style={buttonStyles.textDadosPartidas}>Equipes: {props.textNomeEquipes}</Text>
-            <Text style={buttonStyles.textDadosPartidas}> Criado: {props.textData}</Text>
-          </View>
-        </View>
-        :
-        <Text style={[buttonStyles.text, props.styleText]}>{props.text} </Text>
-    }
+      {
+        textData ?
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={buttonStyles.viewNomePartida}>
+              <Text style={styleText}>{text}</Text>
+            </View>
 
-  </TouchableOpacity>)
+            <View style={buttonStyles.viewDadosPartida}>
+              <Text style={buttonStyles.textDadosPartidas}>Equipes: {textNomeEquipes}</Text>
+              <Text style={buttonStyles.textDadosPartidas}> Criado: {textData}</Text>
+            </View>
+          </View>
+          :
+          <Text style={[buttonStyles.text, styleText]}>{text} </Text>
+      }
+
+    </TouchableOpacity>)
 }
 
 const buttonStyles = StyleSheet.create({
@@ -43,8 +45,6 @@ const buttonStyles = StyleSheet.create({
     justifyContent: 'center'
   },
   btn: {
-    // borderColor: 'red',
-    // borderWidth: 3,
     borderRadius: 10,
     maxWidth: Dimensions.get('screen').width,
     minHeight: 75,

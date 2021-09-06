@@ -2,24 +2,24 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Banner } from 'react-native-paper';
 
-const BannerComponent = (props) => {
+const BannerComponent = ({onPressConfirmar, onPressCancelar, labelTextoCancelar, text, visible}) => {
 
   return (
     <Banner
-      visible={props.visible}
+      visible={visible}
       actions={[
         {
-          label: props.labelTextoCancelar,
-          onPress: props.onPressCancelar
+          label: labelTextoCancelar,
+          onPress: onPressCancelar
         },
         {
           label: 'ok',
-          onPress: props.onPressConfirmar,
+          onPress: onPressConfirmar,
         },
       ]}
       icon={() => (
         <Text>
-         {props.text}
+         {text}
         </Text>
       )}>
 

@@ -2,15 +2,17 @@ import { TextInput, View, StyleSheet } from 'react-native'
 import React from 'react'
 import Cores from "../assets/cores.json";
 
-const Input = ({ placeholderTextColor, style, refInput, ...props }) => {
+const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, onChangeText }) => {
 
     return (
         <View>
             <TextInput
                 style={[inputStyles.input, style]}
                 placeholderTextColor={placeholderTextColor ? placeholderTextColor : Cores.preto}
-                keyboardType={props.keyboardType}
-                {...props}
+                keyboardType={keyboardType}
+                placeholder={placeholder}
+                label={label}
+                onChangeText={onChangeText}
             />
         </View>
     )

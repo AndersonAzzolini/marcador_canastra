@@ -1,15 +1,14 @@
 import RNPickerSelect from 'react-native-picker-select';
 import React from 'react'
-import { StyleSheet } from 'react-native'
 import Cores from '../assets/cores.json'
 
 
-const Dropdown = (props) => {
+const Dropdown = ({onValueChange, items}) => {
   return (
 
     <RNPickerSelect
-      onValueChange={props.onValueChange}
-      items={props.items}
+      onValueChange={onValueChange}
+      items={items}
       useNativeAndroidPickerStyle={false}
 
       placeholder={{

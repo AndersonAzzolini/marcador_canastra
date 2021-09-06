@@ -3,23 +3,23 @@ import React from 'react'
 import Cores from "../assets/cores.json";
 import { Snackbar } from 'react-native-paper';
 
-const SnackbarComponent = ({ ...props }) => {
+const SnackbarComponent = ({ visible, style, onDismissSnackBar, action, onPress, text }) => {
 
   return (
     <View style={styles.container}>
       <Snackbar
-      
-        style={[styles.snackBar, props.style]}
+
+        style={[styles.snackBar, style]}
         duration={2500}
-        visible={props.visible}
-        onDismiss={props.onDismissSnackBar}
-        action={props.action ? {
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={action ? {
           label: 'Undo',
           onPress: () => {
-            props.onPress
+            onPress
           },
         } : null}>
-        <Text style={styles.text}>{props.text}</Text>
+        <Text style={styles.text}>{text}</Text>
       </Snackbar>
     </View>
   )
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Cores.preto,
-    fontSize:Dimensions.get('window').width * 0.04
+    fontSize: Dimensions.get('window').width * 0.04
   },
   snackBar: {
     backgroundColor: Cores.cinzaEscuro

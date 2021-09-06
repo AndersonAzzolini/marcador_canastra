@@ -2,9 +2,10 @@ import { Text, View, StyleSheet, Modal, ActivityIndicator, Dimensions } from 're
 import React from 'react'
 import Cores from "../assets/cores.json";
 
-const Loader = (props) => {
+const Loader = ({ visible, text }) => {
   return (
-    <Modal visible={props.visible}
+
+    <Modal visible={visible}
       transparent
     >
       <View style={styles.container}>
@@ -13,7 +14,7 @@ const Loader = (props) => {
           size={150}
           color={Cores.verde}
         />
-        <Text style={styles.text}>{props.text ? props.text : ""}</Text>
+        <Text style={styles.text}>{text ? text : ""}</Text>
       </View>
     </Modal >
   )
