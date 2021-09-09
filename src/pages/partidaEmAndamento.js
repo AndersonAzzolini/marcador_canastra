@@ -67,10 +67,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       if (!ultimaPontucaoEquipeAdversaria) {
         if (totalPontosEquipe1 > totalPontosEquipe2) {
           setUltimaPontucaoEquipeAdversaria(true)
-          console.log('ultima chance para equipe 2');
         } else if (totalPontosEquipe2 > totalPontosEquipe1) {
           setUltimaPontucaoEquipeAdversaria(true)
-          console.log('ultima chance para equipe 1');
         }
       } else {
         if (totalPontosEquipe1 > totalPontosEquipe2) {
@@ -115,8 +113,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setVencedor(equipe2.nomeEquipe)
       setPerdedor(equipe1.nomeEquipe)
     } else {
-      ultimaPontucao()
-      // setVencedor('')
+      ultimaPontucaoEquipeAdversaria ? ultimaPontucao() : null
     }
   }
 
@@ -358,11 +355,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           >
             <View style={styles.viewFimPartida}>
               <View >
-                <View style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                }}>
-                  <Text style={styles.textVencedor}>Grande vencedor {vencedor} </Text>
+                <View style={styles.viewVencedorEPerdedor}>
+                  <Text style={styles.textVencedor}>Grande vencedor: {vencedor} </Text>
+                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
+                  <Divider style={[styles.divider, styles.dividerVencedores]} />
+                  <Text style={styles.textPerdedor}>Grande perdedor: {perdedor} </Text>
                   <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
                 </View>
                 <View style={styles.viewBotoesRecomecar}>

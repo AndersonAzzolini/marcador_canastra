@@ -10,7 +10,7 @@ const ModalComponent = ({ visible, nomeEquipeVencedora, nomeEquipePerdedora, onP
     >
       <View style={styles.container}>
         <View style={styles.viewTitulo}>
-          <Text style={styles.text}>Parece que temos um vencedor</Text>
+          <Text style={styles.text}>Temos um vencedor ?</Text>
           <Text style={styles.textVencedor}>{nomeEquipeVencedora}</Text>
         </View>
         <View style={styles.viewTitulo}>

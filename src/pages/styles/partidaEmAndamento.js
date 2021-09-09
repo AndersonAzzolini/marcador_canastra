@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 40
   },
+  viewVencedorEPerdedor: {
+    flex: 1,
+    justifyContent: 'center',
+  }
+  ,
   text: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -70,8 +75,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16
   },
-  textCenter:{
-    textAlign:'center'
+  textCenter: {
+    textAlign: 'center'
   },
   textHistorico: {
     marginTop: 10,
@@ -90,6 +95,9 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: 'black',
+  },
+  dividerVencedores: {
+    marginVertical: 30,
   },
   image: {
     height: 50,
