@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   textBold: {
     marginBottom: 10,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 
 })

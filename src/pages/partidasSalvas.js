@@ -75,7 +75,8 @@ const PartidasSalvas = ({ route, navigation }) => {
         {partidas.length > 0 ?
           partidas.map((partidas, indice) => {
             return (
-              <View>
+              <View
+                key={indice}>
                 <Button
                   textData={format(
                     parseISO(partidas.criadoEm),

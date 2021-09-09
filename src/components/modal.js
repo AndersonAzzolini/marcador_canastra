@@ -3,7 +3,7 @@ import React from 'react'
 import Cores from "../assets/cores.json";
 import Button from './button'
 
-const ModalComponent = ({ visible, nomeEquipeVencedora, nomeEquipePerdedora, onPressAdicionaUltimoPonto, onPress }) => {
+const ModalComponent = ({ visible, nomeEquipeVencedora, nomeEquipePerdedora, onPressAdicionaUltimoPonto, onPressVitoria }) => {
   return (
     <Modal visible={visible}
       transparent
@@ -20,8 +20,8 @@ const ModalComponent = ({ visible, nomeEquipeVencedora, nomeEquipePerdedora, onP
             onPress={onPressAdicionaUltimoPonto} />
           <Button
             style={styles.button}
-            text='Atribuir vitória'
-            onPress={onPress} />
+            text='Atribuir vitória e recomeçar partida'
+            onPress={onPressVitoria} />
         </View>
 
       </View>
