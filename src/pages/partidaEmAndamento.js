@@ -21,8 +21,10 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [perdedor, setPerdedor] = useState('')
   const [btnEquipe1, setBtnEquipe1] = useState(false)
   const [btnEquipe2, setBtnEquipe2] = useState(false)
+  const [fimPartida, setFimPartida] = useState(false)
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
+  const [ultimaPontucaoEquipeAdversaria, setUltimaPontucaoEquipeAdversaria] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
@@ -37,6 +39,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     navigation.setOptions({
       title: nomePartida
     })
+    console.log(ultimaPontucaoEquipeAdversaria);
   })
 
   useEffect(() => {
@@ -61,34 +64,61 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   const ultimaPontucao = async () => {
     try {
-      if (totalPontosEquipe1 > totalPontosEquipe2) {
-        setBtnEquipe1(true)
-        setModalVisible(false)
+      if (!ultimaPontucaoEquipeAdversaria) {
+        if (totalPontosEquipe1 > totalPontosEquipe2) {
+          setUltimaPontucaoEquipeAdversaria(true)
+          console.log('ultima chance para equipe 2');
+        } else if (totalPontosEquipe2 > totalPontosEquipe1) {
+          setUltimaPontucaoEquipeAdversaria(true)
+          console.log('ultima chance para equipe 1');
+        }
       } else {
-        console.log('tamo ai');
-        setModalVisible(false)
-        setBtnEquipe2(true)
+        if (totalPontosEquipe1 > totalPontosEquipe2) {
+          setVencedor()
+          console.log('vencedor equipe 1');
+          setVencedor(equipe1.nomeEquipe)
+          setPerdedor(equipe2.nomeEquipe)
+          setFimPartida(true)
+
+        } else {
+          console.log('vencedor equipe 2');
+          setFimPartida(true)
+          setVencedor(equipe2.nomeEquipe)
+          setPerdedor(equipe1.nomeEquipe)
+
+        }
       }
     } catch (error) {
-
+      console.log(error);
     } finally {
-
+      setModalVisible(false)
     }
+  }
+  const mudaStateEZeraPontos = async () => {
+    setPontosEquipe1([{ pontos: 0 }])
+    setPontosEquipe2([{ pontos: 0 }])
+    setHistoricoVencedor([...historicoVencedor])
+    await deletaTodosPontos(idPartida)
+    setBtnEquipe2(false)
+    setBtnEquipe1(false)
+    setUltimaPontucaoEquipeAdversaria(false)
+    setFimPartida(false)
   }
 
   const comparaPontuação = () => {
-    if ((totalPontosEquipe1 >= pontosMaximo) && (totalPontosEquipe1 > totalPontosEquipe2)) {
-      console.log('vencedor equipe 1');
+    if ((totalPontosEquipe1 >= pontosMaximo) && (totalPontosEquipe1 > totalPontosEquipe2) && (!ultimaPontucaoEquipeAdversaria)) {
       setModalVisible(true)
+      setBtnEquipe1(true)
       setVencedor(equipe1.nomeEquipe)
       setPerdedor(equipe2.nomeEquipe)
-    } else if ((totalPontosEquipe2 >= pontosMaximo) && (totalPontosEquipe2 > totalPontosEquipe1)) {
-      console.log('vencedor equipe 2');
+    } else if ((totalPontosEquipe2 >= pontosMaximo) && (totalPontosEquipe2 > totalPontosEquipe1) && (!ultimaPontucaoEquipeAdversaria)) {
       setModalVisible(true)
+      setBtnEquipe2(true)
       setVencedor(equipe2.nomeEquipe)
       setPerdedor(equipe1.nomeEquipe)
     } else {
-      setVencedor('')
+      ultimaPontucao()
+      // setVencedor('')
     }
   }
 
@@ -167,26 +197,25 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   const confirmacaoRecomecarPartida = async () => {
-    if (totalPontosEquipe1 > totalPontosEquipe2) {
-      await insereVencedorHistorico(idPartida, equipe1.idEquipe)
-      setPontosEquipe1([{ pontos: 0 }])
-      setPontosEquipe2([{ pontos: 0 }])
-      setHistoricoVencedor([...historicoVencedor])
-      await deletaTodosPontos(idPartida)
-
-      await Promise.all([
-        inserePontos(equipe1.idEquipe, 0, idPartida),
-        inserePontos(equipe2.idEquipe, 0, idPartida)])
-    } else {
-      await insereVencedorHistorico(idPartida, equipe2.idEquipe)
-      setPontosEquipe1([{ pontos: 0 }])
-      setPontosEquipe2([{ pontos: 0 }])
-      setHistoricoVencedor([historicoVencedor])
-      await deletaTodosPontos(idPartida)
-      Promise.all([
-        inserePontos(equipe1.idEquipe, 0, idPartida),
-        inserePontos(equipe2.idEquipe, 0, idPartida)
-      ])
+    try {
+      if (totalPontosEquipe1 > totalPontosEquipe2) {
+        await insereVencedorHistorico(idPartida, equipe1.idEquipe)
+        mudaStateEZeraPontos()
+        await Promise.all([
+          inserePontos(equipe1.idEquipe, 0, idPartida),
+          inserePontos(equipe2.idEquipe, 0, idPartida)])
+      } else {
+        await insereVencedorHistorico(idPartida, equipe2.idEquipe)
+        await mudaStateEZeraPontos()
+        Promise.all([
+          inserePontos(equipe1.idEquipe, 0, idPartida),
+          inserePontos(equipe2.idEquipe, 0, idPartida)
+        ])
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setModalVisible(false)
     }
   }
 
@@ -220,6 +249,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         visible={modalVisible}
         nomeEquipeVencedora={vencedor}
         nomeEquipePerdedora={perdedor}
+        onPressVitoria={recomecaPartida}
       />
       <ScrollView contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps='handled'
@@ -303,7 +333,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         <View style={styles.viewInformacoesPartida}>
           <View >
             {
-              vencedor
+              ultimaPontucaoEquipeAdversaria && !fimPartida
                 ?
                 <Text style={styles.textPerdedor}>Adicione os pontos de <Text style={styles.textVencedor}>{perdedor}</Text></Text>
                 :
@@ -320,10 +350,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             })}
           </View>
           {
-            vencedor
+            fimPartida
               ?
               <View>
                 <View >
+                  <Text>{vencedor}</Text>
                   <View style={styles.viewBotoesRecomecar}>
                     <Button
                       style={styles.botao}
