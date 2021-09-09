@@ -23,13 +23,11 @@ const PartidasSalvas = ({ route, navigation }) => {
   const carregarPartida = async (idPartida) => {
     setLoadingLoaderPartidas(true)
     try {
-      console.time()
       let informacoesPartida = await selecionaPontos(idPartida)
       const [pontosEquipe1, pontosEquipe2] = await Promise.all([
         selecionaPontosPorEquipe(informacoesPartida[0].idEquipe),
         selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
       ])
-      console.timeEnd()
       informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida }) :
         Alert.alert(
           'Erro',
@@ -47,7 +45,6 @@ const PartidasSalvas = ({ route, navigation }) => {
     try {
       setLoading(true)
       let partidas = await selecionaNomePartidas()
-      console.log(partidas);
       setPartidas(partidas)
     } catch (error) {
       console.log(error)

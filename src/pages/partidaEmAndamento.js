@@ -18,6 +18,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
   const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
   const [pontosVencedor, setPontosVencedor] = useState(0)
+  const [pontosPerdedor, setPontosPerdedor] = useState(0)
   const [vencedor, setVencedor] = useState('')
   const [perdedor, setPerdedor] = useState('')
   const [btnEquipe1, setBtnEquipe1] = useState(false)
@@ -76,11 +77,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           setPerdedor(equipe2.nomeEquipe)
           setFimPartida(true)
           setPontosVencedor(totalPontosEquipe1)
+          setPontosPerdedor(totalPontosEquipe2)
         } else {
           setFimPartida(true)
           setVencedor(equipe2.nomeEquipe)
           setPerdedor(equipe1.nomeEquipe)
           setPontosVencedor(totalPontosEquipe2)
+          setPontosPerdedor(totalPontosEquipe1)
         }
       }
     } catch (error) {
@@ -360,7 +363,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
                   <Divider style={[styles.divider, styles.dividerVencedores]} />
                   <Text style={styles.textPerdedor}>Grande perdedor: {perdedor} </Text>
-                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
+                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosPerdedor}</Text>
                 </View>
                 <View style={styles.viewBotoesRecomecar}>
                   <Button
