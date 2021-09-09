@@ -11,9 +11,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
     minHeight: Dimensions.get('window').height * 0.25,
-  }
-  ,
+  },
+  viewFimPartida: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
   viewPontos: {
+    flex: 1,
     paddingTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-around'
@@ -51,11 +56,22 @@ const styles = StyleSheet.create({
     color: '#FA5A46',
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 20
+    marginVertical: 20,
+    textAlign: 'center'
+  },
+  textVencedor: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 5,
+    textAlign: 'center',
+    color: Cores.verdeEscuro
   },
   textBold: {
     fontWeight: 'bold',
     fontSize: 16
+  },
+  textCenter:{
+    textAlign:'center'
   },
   textHistorico: {
     marginTop: 10,

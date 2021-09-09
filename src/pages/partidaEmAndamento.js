@@ -17,6 +17,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [totalPontosEquipe2, setTotalPontosEquipe2] = useState(0)
   const [inputPontosEquipe1, setInputPontosEquipe1] = useState('')
   const [inputPontosEquipe2, setInputPontosEquipe2] = useState('')
+  const [pontosVencedor, setPontosVencedor] = useState(0)
   const [vencedor, setVencedor] = useState('')
   const [perdedor, setPerdedor] = useState('')
   const [btnEquipe1, setBtnEquipe1] = useState(false)
@@ -39,7 +40,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     navigation.setOptions({
       title: nomePartida
     })
-    console.log(ultimaPontucaoEquipeAdversaria);
   })
 
   useEffect(() => {
@@ -74,18 +74,15 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         }
       } else {
         if (totalPontosEquipe1 > totalPontosEquipe2) {
-          setVencedor()
-          console.log('vencedor equipe 1');
           setVencedor(equipe1.nomeEquipe)
           setPerdedor(equipe2.nomeEquipe)
           setFimPartida(true)
-
+          setPontosVencedor(totalPontosEquipe1)
         } else {
-          console.log('vencedor equipe 2');
           setFimPartida(true)
           setVencedor(equipe2.nomeEquipe)
           setPerdedor(equipe1.nomeEquipe)
-
+          setPontosVencedor(totalPontosEquipe2)
         }
       }
     } catch (error) {
@@ -94,6 +91,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setModalVisible(false)
     }
   }
+
   const mudaStateEZeraPontos = async () => {
     setPontosEquipe1([{ pontos: 0 }])
     setPontosEquipe2([{ pontos: 0 }])
@@ -200,7 +198,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     try {
       if (totalPontosEquipe1 > totalPontosEquipe2) {
         await insereVencedorHistorico(idPartida, equipe1.idEquipe)
-        mudaStateEZeraPontos()
+        await mudaStateEZeraPontos()
         await Promise.all([
           inserePontos(equipe1.idEquipe, 0, idPartida),
           inserePontos(equipe2.idEquipe, 0, idPartida)])
@@ -251,127 +249,136 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         nomeEquipePerdedora={perdedor}
         onPressVitoria={recomecaPartida}
       />
-      <ScrollView contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps='handled'
-      >
-        <View style={styles.viewPontos}>
-          <View >
-            <Text style={[styles.text, styles.textEquipes]}>
-              {equipe1.nomeEquipe}
-            </Text>
-            {pontosEquipe1.map((index => {
-              return <Text style={styles.text}>
-                {index.pontos}
-              </Text>
-            }))}
-            <View style={styles.viewPontosTotal}>
-              <Divider
-                style={styles.divider} />
-              <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
-              <View style={styles.input}>
-                <Input
-                  keyboardType='phone-pad'
-                  value={inputPontosEquipe1}
-                  onChangeText={text => setInputPontosEquipe1(text)}
-                  placeholder='Pontos a adicionar' />
-              </View>
-              <View style={styles.viewIcons}>
-                <Button
-                  disabled={btnEquipe1}
-                  text='Adicionar ponto'
-                  onPress={() => adicionaPontoEquipe(1)}
-                  style={styles.botao}
-                />
-                <Button
-                  disabled={btnEquipe1}
-                  onPress={() => confirmacaoRemoverPonto(1)}
-                  text='Remover ponto'
-                  style={styles.botaoExcluir}
-                />
-              </View>
+      {
+        !fimPartida ?
+          <ScrollView contentContainerStyle={styles.scroll}
+            keyboardShouldPersistTaps='handled'
+          >
+            <View >
+              {
+                ultimaPontucaoEquipeAdversaria && !fimPartida
+                  ?
+                  <Text style={styles.textPerdedor}>Adicione os pontos de {perdedor}</Text>
+                  :
+                  null
+              }
             </View>
-          </View>
-          <View >
-            <Text style={[styles.text, styles.textEquipes]}>
-              {equipe2.nomeEquipe}
-            </Text>
-            {pontosEquipe2.map((index => {
-              return (
-                <Text style={styles.text}>
-                  {index.pontos}
+            <View style={styles.viewPontos}>
+              <View >
+                <Text style={[styles.text, styles.textEquipes]}>
+                  {equipe1.nomeEquipe}
                 </Text>
-              )
-            }))}
-            <View style={styles.viewPontosTotal}>
-              <Divider
-                style={styles.divider} />
-              <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
-            </View>
-            <View style={styles.input}>
-              <Input
-                keyboardType='phone-pad'
-                value={inputPontosEquipe2}
-                onChangeText={text => setInputPontosEquipe2(text)}
-                placeholder='Pontos a adicionar' />
-            </View>
-            <View style={styles.viewIcons}>
-              <Button
-                disabled={btnEquipe2}
-                text='Adicionar ponto'
-                onPress={() => adicionaPontoEquipe(2)}
-                style={styles.botao}
-              />
-              <Button
-                disabled={btnEquipe2}
-                text='Remover ponto'
-                onPress={() => confirmacaoRemoverPonto(2)}
-                style={styles.botaoExcluir}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.viewInformacoesPartida}>
-          <View >
-            {
-              ultimaPontucaoEquipeAdversaria && !fimPartida
-                ?
-                <Text style={styles.textPerdedor}>Adicione os pontos de <Text style={styles.textVencedor}>{perdedor}</Text></Text>
-                :
-                null
-            }
-            <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
-            <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias:</Text>
-            {historicoVencedor.map((index, posicao) => {
-              return (
-                <View >
-                  <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
-                </View>
-              )
-            })}
-          </View>
-          {
-            fimPartida
-              ?
-              <View>
-                <View >
-                  <Text>{vencedor}</Text>
-                  <View style={styles.viewBotoesRecomecar}>
+                {pontosEquipe1.map((index => {
+                  return <Text style={styles.text}>
+                    {index.pontos}
+                  </Text>
+                }))}
+                <View style={styles.viewPontosTotal}>
+                  <Divider
+                    style={styles.divider} />
+                  <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
+                  <View style={styles.input}>
+                    <Input
+                      keyboardType='phone-pad'
+                      value={inputPontosEquipe1}
+                      onChangeText={text => setInputPontosEquipe1(text)}
+                      placeholder='Pontos a adicionar' />
+                  </View>
+                  <View style={styles.viewIcons}>
                     <Button
+                      disabled={btnEquipe1}
+                      text='Adicionar ponto'
+                      onPress={() => adicionaPontoEquipe(1)}
                       style={styles.botao}
-                      onPress={() => recomecaPartida()}
-                      text='Recomeçar está partida' />
+                    />
                     <Button
-                      style={styles.botao}
-                      onPress={() => navigation.replace('Nova Partida')}
-                      text='Criar outra' />
+                      disabled={btnEquipe1}
+                      onPress={() => confirmacaoRemoverPonto(1)}
+                      text='Remover ponto'
+                      style={styles.botaoExcluir}
+                    />
                   </View>
                 </View>
               </View>
-              :
-              null
-          }
-        </View>
-      </ScrollView>
+              <View >
+                <Text style={[styles.text, styles.textEquipes]}>
+                  {equipe2.nomeEquipe}
+                </Text>
+                {pontosEquipe2.map((index => {
+                  return (
+                    <Text style={styles.text}>
+                      {index.pontos}
+                    </Text>
+                  )
+                }))}
+                <View style={styles.viewPontosTotal}>
+                  <Divider
+                    style={styles.divider} />
+                  <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
+                </View>
+                <View style={styles.input}>
+                  <Input
+                    keyboardType='phone-pad'
+                    value={inputPontosEquipe2}
+                    onChangeText={text => setInputPontosEquipe2(text)}
+                    placeholder='Pontos a adicionar' />
+                </View>
+                <View style={styles.viewIcons}>
+                  <Button
+                    disabled={btnEquipe2}
+                    text='Adicionar ponto'
+                    onPress={() => adicionaPontoEquipe(2)}
+                    style={styles.botao}
+                  />
+                  <Button
+                    disabled={btnEquipe2}
+                    text='Remover ponto'
+                    onPress={() => confirmacaoRemoverPonto(2)}
+                    style={styles.botaoExcluir}
+                  />
+                </View>
+              </View>
+            </View>
+            <View style={styles.viewInformacoesPartida}>
+              <View >
+                <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
+                <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias:</Text>
+                {historicoVencedor.map((index, posicao) => {
+                  return (
+                    <View >
+                      <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+          </ScrollView> :
+          <ScrollView contentContainerStyle={styles.scroll}
+            keyboardShouldPersistTaps='handled'
+          >
+            <View style={styles.viewFimPartida}>
+              <View >
+                <View style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                }}>
+                  <Text style={styles.textVencedor}>Grande vencedor {vencedor} </Text>
+                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
+                </View>
+                <View style={styles.viewBotoesRecomecar}>
+                  <Button
+                    style={styles.botao}
+                    onPress={() => confirmacaoRecomecarPartida()}
+                    text='Recomeçar está partida' />
+                  <Button
+                    style={styles.botao}
+                    onPress={() => navigation.replace('Nova Partida')}
+                    text='Criar outra' />
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+      }
       <SnackbarComponent
         onDismissSnackBar={() => setSnackbarVisible(false)}
         visible={snackbarVisible}
