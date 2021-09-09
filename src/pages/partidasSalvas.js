@@ -23,9 +23,13 @@ const PartidasSalvas = ({ route, navigation }) => {
   const carregarPartida = async (idPartida) => {
     setLoadingLoaderPartidas(true)
     try {
+      console.time()
       let informacoesPartida = await selecionaPontos(idPartida)
-      let pontosEquipe1 = await selecionaPontosPorEquipe(informacoesPartida[0].idEquipe)
-      let pontosEquipe2 = await selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
+      const [pontosEquipe1, pontosEquipe2] = await Promise.all([
+        selecionaPontosPorEquipe(informacoesPartida[0].idEquipe),
+        selecionaPontosPorEquipe(informacoesPartida[1].idEquipe)
+      ])
+      console.timeEnd()
       informacoesPartida.length > 0 ? navigation.navigate("Partida em Andamento", { informacoesPartida, pontosEquipe1, pontosEquipe2, idPartida }) :
         Alert.alert(
           'Erro',
@@ -51,12 +55,6 @@ const PartidasSalvas = ({ route, navigation }) => {
       setLoading(false)
     }
   }
-
-  const firstDate = parseISO('2018-04-01');
-  const formattedDate = format(
-    firstDate,
-    'dd-MM-yyyy'
-  );
 
   return loading ?
     <View>

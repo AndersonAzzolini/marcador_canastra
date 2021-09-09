@@ -139,7 +139,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
         total = total += parseInt(index.pontos)
       })
       setTotalPontosEquipe1(total);
-      return total
     } else {
       array.map((index) => {
         total = total += parseInt(index.pontos)
@@ -148,13 +147,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     }
   }
 
-  const removeUltimoPontoEquipe = async (value) => {
+  const removeUltimoPontoEquipe = async (equipe) => {
     try {
-      if (value == 1 && pontosEquipe1.length > 1) {
+      if (equipe == 1 && pontosEquipe1.length > 1) {
         await deletaPonto(equipe1.idEquipe)
         pontosEquipe1.pop()
         setPontosEquipe1([...pontosEquipe1])
-      } else if (pontosEquipe2.length > 1 && value == 2) {
+      } else if (pontosEquipe2.length > 1 && equipe == 2) {
         await deletaPonto(equipe2.idEquipe)
         pontosEquipe2.pop()
         setPontosEquipe2([...pontosEquipe2])

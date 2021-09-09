@@ -10,14 +10,10 @@ const Inicio = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const db = new DatabaseSQLite()
 
-  useEffect(() => {
+  useEffect(async() => {
     navigation.setOptions({ headerShown: false })
-  })
-
-  useEffect(async () => {
     await db.criaDataBase()
-
-  }, [])
+  })
 
   return (
     <View style={styles.container}>

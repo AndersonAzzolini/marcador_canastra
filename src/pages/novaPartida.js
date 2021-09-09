@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, ScrollView, Text, Alert } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Text,
+  Alert
+} from 'react-native'
 import { styles } from './styles/novaPartida'
 import Input from '../components/input'
 import Button from '../components/button'
@@ -40,12 +45,15 @@ const NovaPartida = ({ navigation }) => {
         )
         return false
       }
-      const idPartida = await insereNomePartida(nomePartida, pontos)
-      let idEquipe1 = await insereEquipes(nomeEquipe1 || 'Equipe 1', idPartida)
-      let idEquipe2 = await insereEquipes(nomeEquipe2 || 'Equipe 2', idPartida)
-      console.log(idPartida);
-      await inserePontos(idEquipe1, 0, idPartida)
-      await inserePontos(idEquipe2, 0, idPartida)
+      let idPartida = await insereNomePartida(nomePartida, pontos)
+      const [idEquipe1, idEquipe2] = await Promise.all([
+        insereEquipes(nomeEquipe1 || 'Equipe 1', idPartida),
+        insereEquipes(nomeEquipe2 || 'Equipe 2', idPartida)
+      ])
+      Promise.all([
+        inserePontos(idEquipe1, 0, idPartida),
+        inserePontos(idEquipe2, 0, idPartida)
+      ])
       let informacoesPartida = await selecionaPontos(idPartida)
       let pontosEquipe1 = [{ pontos: 0 }]
       let pontosEquipe2 = [{ pontos: 0 }]
@@ -64,7 +72,7 @@ const NovaPartida = ({ navigation }) => {
     }
   }
 
-  const naoMostraBanner = async (value) => {
+  const naoMostraBanner = async () => {
     try {
       await AsyncStorage.setItem(
         'bannerVisible', '1')
@@ -75,7 +83,6 @@ const NovaPartida = ({ navigation }) => {
   }
 
   const verificaBanner = async () => {
-    console.log('caoi aqu')
     const value = await AsyncStorage.getItem('bannerVisible')
     JSON.parse(value) == '1' ? setBanner(false) : null
   }
