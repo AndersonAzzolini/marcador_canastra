@@ -277,27 +277,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   <Divider
                     style={styles.divider} />
                   <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
-                  <View style={styles.input}>
-                    <Input
-                      keyboardType='phone-pad'
-                      value={inputPontosEquipe1}
-                      onChangeText={text => setInputPontosEquipe1(text)}
-                      placeholder='Pontos a adicionar' />
-                  </View>
-                  <View style={styles.viewIcons}>
-                    <Button
-                      disabled={btnEquipe1}
-                      text='Adicionar ponto'
-                      onPress={() => adicionaPontoEquipe(1)}
-                      style={styles.botao}
-                    />
-                    <Button
-                      disabled={btnEquipe1}
-                      onPress={() => confirmacaoRemoverPonto(1)}
-                      text='Remover ponto'
-                      style={styles.botaoExcluir}
-                    />
-                  </View>
                 </View>
               </View>
               <View >
@@ -316,6 +295,33 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                     style={styles.divider} />
                   <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
                 </View>
+              </View>
+            </View>
+            <View style={{
+              flex: 1, flexDirection: 'row'
+            }}>
+              <View style={{ flex: 1 }}>
+                <View style={styles.input}>
+                  <Input
+                    keyboardType='phone-pad'
+                    value={inputPontosEquipe1}
+                    onChangeText={text => setInputPontosEquipe1(text)}
+                    placeholder='Pontos a adicionar' />
+                </View>
+                <Button
+                  disabled={btnEquipe1}
+                  text='Adicionar ponto'
+                  onPress={() => adicionaPontoEquipe(1)}
+                  style={styles.botao}
+                />
+                <Button
+                  disabled={btnEquipe1}
+                  onPress={() => confirmacaoRemoverPonto(1)}
+                  text='Remover ponto'
+                  style={[styles.botao, styles.botaoExcluir]}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
                 <View style={styles.input}>
                   <Input
                     keyboardType='phone-pad'
@@ -323,22 +329,21 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                     onChangeText={text => setInputPontosEquipe2(text)}
                     placeholder='Pontos a adicionar' />
                 </View>
-                <View style={styles.viewIcons}>
-                  <Button
-                    disabled={btnEquipe2}
-                    text='Adicionar ponto'
-                    onPress={() => adicionaPontoEquipe(2)}
-                    style={styles.botao}
-                  />
-                  <Button
-                    disabled={btnEquipe2}
-                    text='Remover ponto'
-                    onPress={() => confirmacaoRemoverPonto(2)}
-                    style={styles.botaoExcluir}
-                  />
-                </View>
+                <Button
+                  disabled={btnEquipe2}
+                  text='Adicionar ponto'
+                  onPress={() => adicionaPontoEquipe(2)}
+                  style={styles.botao}
+                />
+                <Button
+                  disabled={btnEquipe2}
+                  text='Remover ponto'
+                  onPress={() => confirmacaoRemoverPonto(2)}
+                  style={[styles.botao, styles.botaoExcluir]}
+                />
               </View>
             </View>
+
             <View style={styles.viewInformacoesPartida}>
               <View >
                 <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>

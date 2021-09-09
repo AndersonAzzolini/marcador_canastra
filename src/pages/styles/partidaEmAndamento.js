@@ -21,16 +21,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   viewPontosTotal: {
     maxWidth: Dimensions.get('window').width * 0.4,
     paddingTop: 15,
     justifyContent: 'flex-start'
-  },
-  viewIcons: {
-    marginTop: 15,
-    justifyContent: 'center',
   },
   viewBotoesRecomecar: {
     justifyContent: 'space-evenly',
@@ -88,6 +84,7 @@ const styles = StyleSheet.create({
   botao: {
     borderRadius: 10,
     minHeight: 50,
+    marginHorizontal: 5
   },
   botaoExcluir: {
     backgroundColor: '#FA5A46',
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
     width: 50,
   },
   input: {
-    marginTop: 25,
+    marginHorizontal:5
   },
 })
 export { styles }
