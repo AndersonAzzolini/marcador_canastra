@@ -119,11 +119,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       if (value == 1 && inputPontosEquipe1) {
         setInputPontosEquipe1('')
         setPontosEquipe1([...pontosEquipe1, { pontos: inputPontosEquipe1 }])
-        setInputPontosEquipe2('')
         await inserePontos(equipe1.idEquipe, inputPontosEquipe1, idPartida)
-      } else if (inputPontosEquipe2) {
+      } else if (inputPontosEquipe2 && value == 2) {
         setPontosEquipe2([...pontosEquipe2, { pontos: inputPontosEquipe2 }])
         await inserePontos(equipe2.idEquipe, inputPontosEquipe2, idPartida)
+        setInputPontosEquipe2('')
       } else {
         showAlert()
       }
@@ -150,24 +150,19 @@ const PartidaEmAndamento = ({ route, navigation }) => {
 
   const removeUltimoPontoEquipe = async (value) => {
     try {
-      if (value == 1) {
-        if (pontosEquipe1.length > 1) {
-          await deletaPonto(equipe1.idEquipe)
-          pontosEquipe1.pop()
-          setPontosEquipe1([...pontosEquipe1])
-        } else {
-          mostrarErroRemocaoPonto()
-        }
+      if (value == 1 && pontosEquipe1.length > 1) {
+        await deletaPonto(equipe1.idEquipe)
+        pontosEquipe1.pop()
+        setPontosEquipe1([...pontosEquipe1])
+      } else if (pontosEquipe2.length > 1 && value == 2) {
+        await deletaPonto(equipe2.idEquipe)
+        pontosEquipe2.pop()
+        setPontosEquipe2([...pontosEquipe2])
       } else {
-        if (pontosEquipe2.length > 1) {
-          await deletaPonto(equipe2.idEquipe)
-          pontosEquipe2.pop()
-          setPontosEquipe2([...pontosEquipe2])
-        } else {
-          mostrarErroRemocaoPonto()
-        }
+        mostrarErroRemocaoPonto()
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.log(error);
     }
   }
@@ -179,17 +174,20 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([...historicoVencedor])
       await deletaTodosPontos(idPartida)
-      await inserePontos(equipe1.idEquipe, 0, idPartida)
-      await inserePontos(equipe2.idEquipe, 0, idPartida)
 
+      await Promise.all([
+        inserePontos(equipe1.idEquipe, 0, idPartida),
+        inserePontos(equipe2.idEquipe, 0, idPartida)])
     } else {
       await insereVencedorHistorico(idPartida, equipe2.idEquipe)
       setPontosEquipe1([{ pontos: 0 }])
       setPontosEquipe2([{ pontos: 0 }])
       setHistoricoVencedor([historicoVencedor])
       await deletaTodosPontos(idPartida)
-      await inserePontos(equipe1.idEquipe, 0, idPartida)
-      await inserePontos(equipe2.idEquipe, 0, idPartida)
+      Promise.all([
+        inserePontos(equipe1.idEquipe, 0, idPartida),
+        inserePontos(equipe2.idEquipe, 0, idPartida)
+      ])
     }
   }
 
@@ -291,13 +289,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
               <Button
                 disabled={btnEquipe2}
                 text='Adicionar ponto'
-                onPress={() => adicionaPontoEquipe()}
+                onPress={() => adicionaPontoEquipe(2)}
                 style={styles.botao}
               />
               <Button
                 disabled={btnEquipe2}
                 text='Remover ponto'
-                onPress={() => confirmacaoRemoverPonto()}
+                onPress={() => confirmacaoRemoverPonto(2)}
                 style={styles.botaoExcluir}
               />
             </View>

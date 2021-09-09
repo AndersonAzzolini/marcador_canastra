@@ -2,7 +2,7 @@ import { TextInput, View, StyleSheet } from 'react-native'
 import React from 'react'
 import Cores from "../assets/cores.json";
 
-const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, onChangeText }) => {
+const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, onChangeText, value }) => {
 
     return (
         <View>
@@ -13,6 +13,7 @@ const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, 
                 placeholder={placeholder}
                 label={label}
                 onChangeText={onChangeText}
+                value={value}
             />
         </View>
     )
