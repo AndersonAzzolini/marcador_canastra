@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, Text, View } from 'react-native'
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  View,
+  Pressable
+} from 'react-native'
 import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, deletaTodosPontos, inserePontos } from '../db/pontos'
@@ -8,6 +15,9 @@ import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
 import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
 import ModalComponent from '../components/modal'
+import SetaParaCima from '../assets/img/triangulo-para-cima.png'
+import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
+import { set } from 'date-fns'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -26,6 +36,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [fimPartida, setFimPartida] = useState(false)
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
+  const [historicoVisble, setHistoricoVisible] = useState(false)
   const [ultimaPontucaoEquipeAdversaria, setUltimaPontucaoEquipeAdversaria] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
@@ -345,14 +356,28 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             <View style={styles.viewInformacoesPartida}>
               <View >
                 <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
-                <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias:</Text>
-                {historicoVencedor.map((index, posicao) => {
-                  return (
-                    <View >
-                      <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
-                    </View>
-                  )
-                })}
+                <Pressable
+                  onPress={() => setHistoricoVisible(!historicoVisble)}>
+                  <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias <Image source={historicoVisble ? SetaParaBaixo : SetaParaCima} /></Text>
+                </Pressable>
+
+                {
+                  historicoVisble ?
+                    historicoVencedor.length > 0 ?
+                      historicoVencedor.map((index, posicao) => {
+                        return (
+                          <View >
+                            <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
+                          </View>
+                        )
+                      })
+                      :
+                      <View >
+                        <Text style={styles.textRodadas}>Nenhuma partida finalizada </Text>
+                      </View>
+                    :
+                    null
+                }
               </View>
             </View>
           </ScrollView> :

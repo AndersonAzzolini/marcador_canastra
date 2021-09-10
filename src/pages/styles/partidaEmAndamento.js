@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   textRodadas: {
-    textAlign: 'left'
+    textAlign: 'left',
+    marginTop:5
   },
   botao: {
     borderRadius: 10,
