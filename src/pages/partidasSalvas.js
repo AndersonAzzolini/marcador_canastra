@@ -88,21 +88,26 @@ const PartidasSalvas = ({ route, navigation }) => {
         text='Carregando partida... aguarde'
       />
       <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={{ flexDirection: 'row-reverse', }}>
+        {
+          partidas.length > 0 ?
+            <View style={{ flexDirection: 'row-reverse', }}>
 
-          <ChipComponent
-            selected={btnOrdens.recentes}
-            text='Recentes'
-            onPress={() => ordenaPartidaPorNomeDecrescente()}
-            icone={setaPraCima}
-          />
-          <ChipComponent
-            selected={btnOrdens.antigas}
-            text='Antigas'
-            onPress={() => ordenaPartidaPorNomeCrescente()}
-            icone={setaPraBaixo}
-          />
-        </View>
+              <ChipComponent
+                selected={btnOrdens.recentes}
+                text='Recentes'
+                onPress={() => ordenaPartidaPorNomeDecrescente()}
+                icone={setaPraCima}
+              />
+              <ChipComponent
+                selected={btnOrdens.antigas}
+                text='Antigas'
+                onPress={() => ordenaPartidaPorNomeCrescente()}
+                icone={setaPraBaixo}
+              />
+            </View>
+            :
+            null
+        }
         {partidas.length > 0 ?
           partidas.map((partidas, indice) => {
             return (
