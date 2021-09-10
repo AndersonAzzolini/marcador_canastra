@@ -8,7 +8,6 @@ const SnackbarComponent = ({ visible, style, onDismissSnackBar, action, onPress,
   return (
     <View style={styles.container}>
       <Snackbar
-
         style={[styles.snackBar, style]}
         duration={2500}
         visible={visible}
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: Dimensions.get('window').width * 0.04
   },
   snackBar: {
-    backgroundColor: Cores.cinzaEscuro
+    backgroundColor: Cores.vermelho
   }
 })
 

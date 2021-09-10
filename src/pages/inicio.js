@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../components/button'
-import { View, Dimensions, Image } from 'react-native'
+import {
+  View,
+  Image
+} from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
 import Loader from '../components/loader'
@@ -10,7 +13,7 @@ const Inicio = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
   const db = new DatabaseSQLite()
 
-  useEffect(async() => {
+  useEffect(async () => {
     navigation.setOptions({ headerShown: false })
     await db.criaDataBase()
   })

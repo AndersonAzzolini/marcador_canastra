@@ -17,7 +17,6 @@ import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
 import ModalComponent from '../components/modal'
 import SetaParaCima from '../assets/img/triangulo-para-cima.png'
 import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
-import { set } from 'date-fns'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -31,6 +30,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosPerdedor, setPontosPerdedor] = useState(0)
   const [vencedor, setVencedor] = useState('')
   const [perdedor, setPerdedor] = useState('')
+  const [erros, setErros] = useState('')
   const [btnEquipe1, setBtnEquipe1] = useState(false)
   const [btnEquipe2, setBtnEquipe2] = useState(false)
   const [fimPartida, setFimPartida] = useState(false)
@@ -68,10 +68,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }, [totalPontosEquipe1, totalPontosEquipe2])
 
   const showAlert = () => {
-    Alert.alert(
-      'Erro',
-      'É necessário informar o valor do campo '
-    )
+    setSnackbarVisible(true)
+    setErros('É necessário informar o valor do campo ')
   }
 
   const ultimaPontucao = async () => {
@@ -150,6 +148,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   const mostrarErroRemocaoPonto = () => {
+    setErros('Este valor é padrão, impossível remove-lo')
     setSnackbarVisible(true)
   }
 
@@ -360,7 +359,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   onPress={() => setHistoricoVisible(!historicoVisble)}>
                   <Text style={[styles.textBold, styles.textHistorico]}>Histórico vitórias <Image source={historicoVisble ? SetaParaBaixo : SetaParaCima} /></Text>
                 </Pressable>
-
                 {
                   historicoVisble ?
                     historicoVencedor.length > 0 ?
@@ -410,7 +408,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       <SnackbarComponent
         onDismissSnackBar={() => setSnackbarVisible(false)}
         visible={snackbarVisible}
-        text='Este valor é padrão, impossível removê-lo'
+        text={erros}
       />
     </>
   )
