@@ -10,12 +10,16 @@ import {
   parseISO,
   format,
 } from 'date-fns';
+import ChipComponent from '../components/chip';
+import setaPraBaixo from '../assets/img/seta-para-baixo.png'
+import setaPraCima from '../assets/img/seta-para-cima.png'
+
 
 const PartidasSalvas = ({ route, navigation }) => {
   const [partidas, setPartidas] = useState([])
   const [loading, setLoading] = useState(false)
   const [loadingLoaderPartidas, setLoadingLoaderPartidas] = useState(false)
-
+  const [btnOrdens, setBtnOrdens] = useState({ antigas: false, recentes: true })
   useEffect(async () => {
     await partidasSalvas()
   }, [])
@@ -40,6 +44,21 @@ const PartidasSalvas = ({ route, navigation }) => {
     }
   }
 
+  const ordenaPartidaPorNomeCrescente = () => {
+    setBtnOrdens({ antigas: true, recentes: false })
+    const arrayPartidas = partidas.sort(function (a, b) {
+      return a.criadoEm.toLowerCase() > b.criadoEm.toLowerCase() ? 1 : -1;
+    });
+    setPartidas([...arrayPartidas])
+  }
+
+  const ordenaPartidaPorNomeDecrescente = () => {
+    setBtnOrdens({ antigas: false, recentes: true })
+    const arrayPartidas = partidas.sort(function (a, b) {
+      return a.criadoEm.toLowerCase() < b.criadoEm.toLowerCase() ? 1 : -1;
+    });
+    setPartidas([...arrayPartidas])
+  }
 
   const partidasSalvas = async () => {
     try {
@@ -69,6 +88,21 @@ const PartidasSalvas = ({ route, navigation }) => {
         text='Carregando partida... aguarde'
       />
       <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={{ flexDirection: 'row-reverse', }}>
+
+          <ChipComponent
+            selected={btnOrdens.recentes}
+            text='Recentes'
+            onPress={() => ordenaPartidaPorNomeDecrescente()}
+            icone={setaPraCima}
+          />
+          <ChipComponent
+            selected={btnOrdens.antigas}
+            text='Antigas'
+            onPress={() => ordenaPartidaPorNomeCrescente()}
+            icone={setaPraBaixo}
+          />
+        </View>
         {partidas.length > 0 ?
           partidas.map((partidas, indice) => {
             return (

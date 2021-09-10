@@ -57,8 +57,9 @@ const styles = StyleSheet.create({
     color: '#FA5A46',
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginVertical: 5,
+
   },
   textVencedor: {
     fontSize: 20,
