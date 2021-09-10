@@ -36,8 +36,14 @@ const styles = StyleSheet.create({
   viewVencedorEPerdedor: {
     flex: 1,
     justifyContent: 'center',
-  }
-  ,
+  },
+  viewBotoesEInputs: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  viewBotoesAdicionarERemover: {
+    flex: 1
+  },
   text: {
     fontSize: 22,
     fontWeight: 'bold',
@@ -59,7 +65,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 5,
-
   },
   textVencedor: {
     fontSize: 20,
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     width: 50,
   },
   input: {
-    marginHorizontal:5
+    marginHorizontal: 5
   },
 })
 export { styles }

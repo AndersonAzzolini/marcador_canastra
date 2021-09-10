@@ -297,10 +297,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 </View>
               </View>
             </View>
-            <View style={{
-              flex: 1, flexDirection: 'row'
-            }}>
-              <View style={{ flex: 1 }}>
+            <View style={styles.viewBotoesEInputs}>
+              <View style={styles.viewBotoesAdicionarERemover}>
                 <View style={styles.input}>
                   <Input
                     keyboardType='phone-pad'
@@ -321,7 +319,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                   style={[styles.botao, styles.botaoExcluir]}
                 />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={styles.viewBotoesAdicionarERemover}>
                 <View style={styles.input}>
                   <Input
                     keyboardType='phone-pad'
