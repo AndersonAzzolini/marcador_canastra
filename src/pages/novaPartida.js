@@ -5,6 +5,8 @@ import {
   Text,
   Alert
 } from 'react-native'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { styles } from './styles/novaPartida'
 import Input from '../components/input'
 import Button from '../components/button'
@@ -19,7 +21,6 @@ const NovaPartida = ({ navigation }) => {
 
   const [nomeEquipe1, setNomeEquipe1] = useState('')
   const [nomeEquipe2, setNomeEquipe2] = useState('')
-  const [nomePartida, setNomePartida] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(true)
   const [pontos, setPontos] = useState('')
@@ -27,25 +28,29 @@ const NovaPartida = ({ navigation }) => {
   useEffect(() => {
     verificaBanner()
   })
+  const SchemaNovaPartida = Yup.object().shape({
+    nomePartida: Yup.string().required('Campo obrigatório!'),
+    pontos: Yup.number()
+      .positive()
+      .required('Campo obrigatório!')
+  });
+
+  const {
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    values,
+    errors,
+  } = useFormik({
+    validationSchema: SchemaNovaPartida,
+    initialValues: { nomePartida: '', pontos: '' },
+    onSubmit: () => criaPartida(values.nomePartida)
+  })
 
   const criaPartida = async () => {
     try {
       setLoading(true)
-      if (!pontos || !nomePartida) {
-        Alert.alert(
-          'Erro',
-          'É necessário informar todos os campos obrigatórios'
-        )
-        return false
-      }
-      if (isNaN(pontos)) {
-        Alert.alert(
-          'Erro',
-          'Campo de pontos deve ser somente números'
-        )
-        return false
-      }
-      let idPartida = await insereNomePartida(nomePartida, pontos)
+      let idPartida = await insereNomePartida(values.nomePartida, values.pontos)
       const [idEquipe1, idEquipe2] = await Promise.all([
         insereEquipes(nomeEquipe1 || 'Equipe 1', idPartida),
         insereEquipes(nomeEquipe2 || 'Equipe 2', idPartida)
@@ -107,15 +112,20 @@ const NovaPartida = ({ navigation }) => {
           <Text style={styles.textBold}>Campos obrigatórios marcados com *</Text>
           <Text>Nome da partida *:</Text>
           <Input
-            label='Primeira equipe'
-            value={nomePartida}
-            onChangeText={(text) => setNomePartida(text)}
-            placeholder='Digite o nome da partida' />
+            onChangeText={handleChange('nomePartida')}
+            placeholder='Digite o nome da partida'
+            onBlur={handleBlur('novaPartida')}
+            error={errors.NovaPartida}
+            value={values.nomePartida}
+          />
+          {
+            errors.nomePartida &&
+            <Text>{errors.nomePartida}</Text>
+          }
           <Text>Primeira equipe:</Text>
           <Input
-            label='Primeira equipe'
-            value={nomeEquipe1}
             onChangeText={(text) => setNomeEquipe1(text)}
+            value={nomeEquipe1}
             placeholder='Equipe 1' />
         </View>
         <View style={styles.viewInputs}>
@@ -128,14 +138,17 @@ const NovaPartida = ({ navigation }) => {
         <View style={styles.viewInputs}>
           <Text>Pontos máximos *:</Text>
           <Input
-            value={pontos}
-            onChangeText={(text) => setPontos(text)}
+            onChangeText={handleChange('pontos')}
             keyboardType='phone-pad'
-            placeholder='Digite a pontuação máxima da partida' />
+            placeholder='Digite a pontuação máxima da partida'
+            onBlur={handleBlur('pontos')}
+            error={errors.pontos}
+            value={values.pontos}
+          />
         </View>
         <View style={styles.viewBotoes}>
           <Button
-            onPress={() => criaPartida()}
+            onPress={handleSubmit}
             text='Criar partida' />
         </View>
       </ScrollView >
