@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-
+import Cores from '../../assets/cores.json'
 const styles = StyleSheet.create({
 
   scroll: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   viewInputs: {
     alignContent: 'center',
-    paddingVertical: 10
+    paddingVertical: 5
   },
   viewBotoes: {
     flex: 1,
@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
   textBold: {
     marginBottom: 10,
     fontWeight: "bold",
+  },
+  textErros:{
+    color: Cores.vermelho
   },
 
 })

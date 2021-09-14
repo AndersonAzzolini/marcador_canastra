@@ -2,13 +2,21 @@ import { TextInput, View, StyleSheet } from 'react-native'
 import React from 'react'
 import Cores from "../assets/cores.json";
 
-const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, onChangeText, value }) => {
+const Input = ({ style, keyboardType, placeholder, label, onChangeText, value, error, touched }) => {
+    const validationColor = !touched ? '#223e4b' : error ? '#FF5A5F' : '#223e4b';
+
+    const inputStyles = StyleSheet.create({
+        input: {
+            borderBottomWidth: 1,
+            borderColor: validationColor ? validationColor : Cores.preto,
+        },
+    })
 
     return (
         <View>
             <TextInput
                 style={[inputStyles.input, style]}
-                placeholderTextColor={placeholderTextColor ? placeholderTextColor : Cores.preto}
+                placeholderTextColor={validationColor ? validationColor : Cores.preto}
                 keyboardType={keyboardType}
                 placeholder={placeholder}
                 label={label}
@@ -17,15 +25,8 @@ const Input = ({ placeholderTextColor, style, keyboardType, placeholder, label, 
             />
         </View>
     )
-}
 
-const inputStyles = StyleSheet.create({
-    input: {
-        borderBottomWidth: 1,
-        marginBottom: 8,
-        color: Cores.preto,
-    },
-})
+}
 
 export default Input
 

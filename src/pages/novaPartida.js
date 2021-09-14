@@ -23,15 +23,14 @@ const NovaPartida = ({ navigation }) => {
   const [nomeEquipe2, setNomeEquipe2] = useState('')
   const [loading, setLoading] = useState(false)
   const [banner, setBanner] = useState(true)
-  const [pontos, setPontos] = useState('')
 
   useEffect(() => {
     verificaBanner()
   })
   const SchemaNovaPartida = Yup.object().shape({
     nomePartida: Yup.string().required('Campo obrigatório!'),
-    pontos: Yup.number()
-      .positive()
+    pontos: Yup.number('')
+      .positive('O campo de ver somente números')
       .required('Campo obrigatório!')
   });
 
@@ -41,9 +40,13 @@ const NovaPartida = ({ navigation }) => {
     handleSubmit,
     values,
     errors,
+    touched,
   } = useFormik({
     validationSchema: SchemaNovaPartida,
-    initialValues: { nomePartida: '', pontos: '' },
+    initialValues: {
+      nomePartida: '',
+      pontos: ''
+    },
     onSubmit: () => criaPartida(values.nomePartida)
   })
 
@@ -94,16 +97,18 @@ const NovaPartida = ({ navigation }) => {
 
   return (
     <>
-      <BannerComponent
-        text='A partida é salva automaticamente, não se preocupe com isso :)'
-        labelTextoCancelar='Não mostrar novamente'
-        onPressCancelar={() => naoMostraBanner()}
-        onPressConfirmar={() => setBanner(false)}
-        visible={banner} />
       <Loader
         visible={loading}
         text='Criando partida... aguarde'
       />
+      {banner &&
+        <BannerComponent
+          text='A partida é salva automaticamente, não se preocupe com isso :)'
+          labelTextoCancelar='Não mostrar novamente'
+          onPressCancelar={() => naoMostraBanner()}
+          onPressConfirmar={() => setBanner(false)}
+          visible={banner}
+        />}
       <ScrollView contentContainerStyle={styles.scroll}
         keyboardShouldPersistTaps='handled'
       >
@@ -113,16 +118,18 @@ const NovaPartida = ({ navigation }) => {
           <Text>Nome da partida *:</Text>
           <Input
             onChangeText={handleChange('nomePartida')}
+            keyboardType='phone-pad'
             placeholder='Digite o nome da partida'
-            onBlur={handleBlur('novaPartida')}
-            error={errors.NovaPartida}
+            onBlur={handleBlur('nomePartida')}
             value={values.nomePartida}
+            touched={touched.nomePartida}
+            error={errors.nomePartida}
           />
-          {
-            errors.nomePartida &&
-            <Text>{errors.nomePartida}</Text>
-          }
-          <Text>Primeira equipe:</Text>
+          {errors.nomePartida && touched.nomePartida ? (
+            <Text style={styles.textErros}>{errors.nomePartida}</Text>
+          ) : null}
+
+          <Text style={{ marginTop: 5 }}>Primeira equipe:</Text>
           <Input
             onChangeText={(text) => setNomeEquipe1(text)}
             value={nomeEquipe1}
@@ -142,9 +149,14 @@ const NovaPartida = ({ navigation }) => {
             keyboardType='phone-pad'
             placeholder='Digite a pontuação máxima da partida'
             onBlur={handleBlur('pontos')}
-            error={errors.pontos}
             value={values.pontos}
+            touched={touched.pontos}
+            error={errors.pontos}
           />
+          {
+            errors.pontos &&
+            <Text style={styles.textErros}>{errors.pontos}</Text>
+          }
         </View>
         <View style={styles.viewBotoes}>
           <Button
