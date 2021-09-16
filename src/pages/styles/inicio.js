@@ -2,9 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native'
 import Cores from '../../assets/cores.json'
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
-    alignContent: 'center',
     paddingHorizontal: 15,
   },
   viewBotoes: {
@@ -14,18 +12,15 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   viewLogo: {
-    flex: 1.2,
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems:'center',
-  },
-  image: {
-    maxWidth: Dimensions.get('screen').width
+    maxHeight: 400
   },
   scroll: {
     flexGrow: 1,
     justifyContent: 'center'
   },
-
+  image: { flex: 1 },
   text: {
     fontSize: 22
   },
