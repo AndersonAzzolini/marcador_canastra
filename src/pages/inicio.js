@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Button from '../components/button'
 import {
   View,
-  Image
+  Image,
+  ScrollView
 } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
@@ -19,31 +20,35 @@ const Inicio = ({ navigation }) => {
   })
 
   return (
-    <View style={styles.container}>
-      <Loader
-        visible={loading}
-        text='Carregando partidas salvas.. Aguarde'
-      />
-      <View style={styles.viewLogo}>
-        <Image
-          style={styles.image}
-          source={ImageTeeste}
+    <ScrollView contentContainerStyle={styles.scroll}
+      keyboardShouldPersistTaps='handled'
+    >
+      <View style={styles.container}>
+        <Loader
+          visible={loading}
+          text='Carregando partidas salvas.. Aguarde'
         />
-      </View>
-      <View style={styles.viewBotoes}>
-        <Button
-          text='Nova partida'
-          styleText={styles.text}
-          onPress={() => navigation.navigate("Nova Partida")}
+        <View style={styles.viewLogo}>
+          <Image
+            style={styles.image}
+            source={ImageTeeste}
+          />
+        </View>
+        <View style={styles.viewBotoes}>
+          <Button
+            text='Nova partida'
+            styleText={styles.text}
+            onPress={() => navigation.navigate("Nova Partida")}
 
-        />
-        <Button
-          styleText={styles.text}
-          text='Partidas Salvas'
-          onPress={() => navigation.navigate("Partidas Salvas")}
-        />
+          />
+          <Button
+            styleText={styles.text}
+            text='Partidas Salvas'
+            onPress={() => navigation.navigate("Partidas Salvas")}
+          />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

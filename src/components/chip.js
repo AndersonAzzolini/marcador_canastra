@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   text: 
   {
-    fontSize: Dimensions.get('window').width * 0.038
+    fontSize: 15
   },
 })
 

@@ -31,15 +31,16 @@ const ModalComponent = ({ visible, nomeEquipeVencedora, nomeEquipePerdedora, onP
 
 const styles = StyleSheet.create({
   container: {
+    padding:30,
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     backgroundColor: Cores.fundoLoader,
   },
   text: {
     color: Cores.branco,
-    fontSize: Dimensions.get("window").width * 0.05,
+    fontSize: 30,
     marginTop: 20,
+    textAlign:'center'
   },
   textVencedor: {
     fontSize: Dimensions.get("window").width * 0.075,

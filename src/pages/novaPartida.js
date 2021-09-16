@@ -118,7 +118,6 @@ const NovaPartida = ({ navigation }) => {
           <Text>Nome da partida *:</Text>
           <Input
             onChangeText={handleChange('nomePartida')}
-            keyboardType='phone-pad'
             placeholder='Digite o nome da partida'
             onBlur={handleBlur('nomePartida')}
             value={values.nomePartida}

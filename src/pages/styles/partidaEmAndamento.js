@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: 'black',
-  },
+   },
   dividerVencedores: {
     marginVertical: 30,
   },

@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "bold",
   },
-  textErros:{
+  textErros: {
+    paddingLeft: 5,
     color: Cores.vermelho
   },
 

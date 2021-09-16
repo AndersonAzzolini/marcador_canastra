@@ -38,6 +38,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [historicoVisble, setHistoricoVisible] = useState(false)
   const [ultimaPontucaoEquipeAdversaria, setUltimaPontucaoEquipeAdversaria] = useState(false)
+  const [empate, setEmpate] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
@@ -81,7 +82,14 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           setUltimaPontucaoEquipeAdversaria(true)
         }
       } else {
-        if (totalPontosEquipe1 > totalPontosEquipe2) {
+        if (totalPontosEquipe2 == totalPontosEquipe1) {
+          console.log('caiu empate');
+          setEmpate(true)
+          setUltimaPontucaoEquipeAdversaria(false)
+          setBtnEquipe2(false)
+          setBtnEquipe1(false)
+        }
+        else if (totalPontosEquipe1 > totalPontosEquipe2) {
           setVencedor(equipe1.nomeEquipe)
           setPerdedor(equipe2.nomeEquipe)
           setFimPartida(true)
@@ -103,6 +111,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   const mudaStateEZeraPontos = async () => {
+    setEmpate(false)
     setPontosEquipe1([{ pontos: 0 }])
     setPontosEquipe2([{ pontos: 0 }])
     setHistoricoVencedor([...historicoVencedor])
@@ -125,7 +134,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       setVencedor(equipe2.nomeEquipe)
       setPerdedor(equipe1.nomeEquipe)
     } else {
-      ultimaPontucaoEquipeAdversaria ? ultimaPontucao() : null
+      ultimaPontucaoEquipeAdversaria && ultimaPontucao()
     }
   }
 
@@ -266,11 +275,12 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           >
             <View >
               {
-                ultimaPontucaoEquipeAdversaria && !fimPartida
-                  ?
-                  <Text style={styles.textPerdedor}>Adicione os pontos de {perdedor}</Text>
-                  :
-                  null
+                ultimaPontucaoEquipeAdversaria && !fimPartida && !empate &&
+                <Text style={styles.textPerdedor}>Adicione os pontos de {perdedor}</Text>
+              }
+              {
+                empate &&
+                <Text style={styles.textPerdedor}>Desempate</Text>
               }
             </View>
             <View style={styles.viewPontos}>
@@ -378,10 +388,12 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 }
               </View>
             </View>
-          </ScrollView> :
+          </ScrollView>
+          :
           <ScrollView contentContainerStyle={styles.scroll}
             keyboardShouldPersistTaps='handled'
           >
+
             <View style={styles.viewFimPartida}>
               <View >
                 <View style={styles.viewVencedorEPerdedor}>
