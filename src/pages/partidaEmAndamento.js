@@ -9,11 +9,9 @@ import {
 } from 'react-native'
 import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, deletaTodosPontos, inserePontos } from '../db/pontos'
-import Input from '../components/input'
-import Button from '../components/button'
 import SnackbarComponent from '../components/snackbar'
 import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
-import ModalComponent from '../components/modal'
+import ModalPrimeiroVencedor from '../components/modalPrimeiroVencedor'
 import SetaParaCima from '../assets/img/triangulo-para-cima.png'
 import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
 import ComponentePontos from '../components/partidaEmAndamento/componentePontos'
@@ -262,14 +260,27 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     navigation.replace('Nova Partida')
   }
 
+  const voltarModalPrimeiroVencedor = () => {
+    try {
+      totalPontosEquipe1 > totalPontosEquipe2 ? removeUltimoPontoEquipe(1) : removeUltimoPontoEquipe(2)
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setModalVisible(false)
+      setBtnEquipe1(false)
+      setBtnEquipe2(false)
+    }
+  }
   return (
     <>
-      <ModalComponent
+      <ModalPrimeiroVencedor
         onPressAdicionaUltimoPonto={ultimaPontucao}
         visible={modalVisible}
         nomeEquipeVencedora={vencedor}
         nomeEquipePerdedora={perdedor}
         onPressVitoria={recomecaPartida}
+        onPressVoltar={voltarModalPrimeiroVencedor}
       />
       {
         !fimPartida ?
