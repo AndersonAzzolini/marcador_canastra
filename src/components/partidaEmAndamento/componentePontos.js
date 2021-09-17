@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { Divider } from 'react-native-paper';
 
-const ComponentePontos = ({ arrayPontosEquipe1, arrayPontosEquipe2, nomeEquipe1, nomeEquipe2, totalPontosEquipe1, totalPontosEquipe2}) => {
+const ComponentePontos = ({ arrayPontosEquipe1, arrayPontosEquipe2, nomeEquipe1, nomeEquipe2, totalPontosEquipe1, totalPontosEquipe2 }) => {
 
   return (
     <View style={styles.viewPontos}>
@@ -69,8 +69,9 @@ const styles = StyleSheet.create({
     color: '#36D948'
   },
   divider: {
-    borderWidth:1
-   },
+    borderWidth: 1,
+    width: 85
+  },
 
 })
 

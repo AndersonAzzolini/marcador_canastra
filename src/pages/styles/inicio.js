@@ -12,9 +12,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   viewLogo: {
+    maxWidth: Dimensions.get('screen').width,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     maxHeight: 400
+  },
+  image: {
+    maxWidth: Dimensions.get('screen').width,
   },
   scroll: {
     flexGrow: 1,

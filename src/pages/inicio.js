@@ -3,7 +3,8 @@ import Button from '../components/button'
 import {
   View,
   Image,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native'
 import DatabaseSQLite from '../db/db'
 import { styles } from './styles/inicio'
@@ -30,6 +31,7 @@ const Inicio = ({ navigation }) => {
         />
         <View style={styles.viewLogo}>
           <Image
+            style={styles.image}
             resizeMode='center'
             source={ImageTeeste}
           />
