@@ -12,11 +12,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
     minHeight: Dimensions.get('window').height * 0.25,
   },
-  viewFimPartida: {
-    flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
   viewPontos: {
     flex: 1,
     paddingTop: 30,
@@ -27,11 +22,6 @@ const styles = StyleSheet.create({
     maxWidth: Dimensions.get('window').width * 0.4,
     paddingTop: 15,
     justifyContent: 'flex-start'
-  },
-  viewBotoesRecomecar: {
-    justifyContent: 'space-evenly',
-    marginBottom: 15,
-    marginTop: 40
   },
   viewVencedorEPerdedor: {
     flex: 1,

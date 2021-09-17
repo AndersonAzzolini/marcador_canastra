@@ -17,6 +17,8 @@ import { insereVencedorHistorico, selecionaHistorico } from '../db/partida'
 import ModalComponent from '../components/modal'
 import SetaParaCima from '../assets/img/triangulo-para-cima.png'
 import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
+import ComponentePontos from '../components/partidaEmAndamento/componentePontos'
+import TelaVencedores from '../components/partidaEmAndamento/telaVencedores'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -73,6 +75,7 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     setErros('É necessário informar o valor do campo ')
   }
 
+  console.log(empate);
   const ultimaPontucao = async () => {
     try {
       if (!ultimaPontucaoEquipeAdversaria) {
@@ -111,9 +114,9 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   }
 
   const mudaStateEZeraPontos = async () => {
-    setEmpate(false)
     setPontosEquipe1([{ pontos: 0 }])
     setPontosEquipe2([{ pontos: 0 }])
+    setEmpate(false)
     setHistoricoVencedor([...historicoVencedor])
     await deletaTodosPontos(idPartida)
     setBtnEquipe2(false)
@@ -259,6 +262,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     setHistoricoVencedor(nomeEquipes)
   }
 
+  const criarNovaPartida = async () => {
+    confirmacaoRecomecarPartida()
+    navigation.replace('Nova Partida')
+  }
+
   return (
     <>
       <ModalComponent
@@ -283,40 +291,14 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                 <Text style={styles.textPerdedor}>Desempate</Text>
               }
             </View>
-            <View style={styles.viewPontos}>
-              <View >
-                <Text style={[styles.text, styles.textEquipes]}>
-                  {equipe1.nomeEquipe}
-                </Text>
-                {pontosEquipe1.map((index => {
-                  return <Text style={styles.text}>
-                    {index.pontos}
-                  </Text>
-                }))}
-                <View style={styles.viewPontosTotal}>
-                  <Divider
-                    style={styles.divider} />
-                  <Text style={styles.textTotal}>{totalPontosEquipe1}</Text>
-                </View>
-              </View>
-              <View >
-                <Text style={[styles.text, styles.textEquipes]}>
-                  {equipe2.nomeEquipe}
-                </Text>
-                {pontosEquipe2.map((index => {
-                  return (
-                    <Text style={styles.text}>
-                      {index.pontos}
-                    </Text>
-                  )
-                }))}
-                <View style={styles.viewPontosTotal}>
-                  <Divider
-                    style={styles.divider} />
-                  <Text style={styles.textTotal}>{totalPontosEquipe2}</Text>
-                </View>
-              </View>
-            </View>
+            <ComponentePontos
+              arrayPontosEquipe1={pontosEquipe1}
+              arrayPontosEquipe2={pontosEquipe2}
+              nomeEquipe1={equipe1.nomeEquipe}
+              nomeEquipe2={equipe2.nomeEquipe}
+              totalPontosEquipe1={totalPontosEquipe1}
+              totalPontosEquipe2={totalPontosEquipe2}
+            />
             <View style={styles.viewBotoesEInputs}>
               <View style={styles.viewBotoesAdicionarERemover}>
                 <View style={styles.input}>
@@ -374,7 +356,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
                     historicoVencedor.length > 0 ?
                       historicoVencedor.map((index, posicao) => {
                         return (
-                          <View >
+                          <View
+                            key={posicao}>
                             <Text style={styles.textRodadas}>{posicao + 1}ª rodada: {index.nome}  </Text>
                           </View>
                         )
@@ -393,28 +376,14 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           <ScrollView contentContainerStyle={styles.scroll}
             keyboardShouldPersistTaps='handled'
           >
-
-            <View style={styles.viewFimPartida}>
-              <View >
-                <View style={styles.viewVencedorEPerdedor}>
-                  <Text style={styles.textVencedor}>Grande vencedor: {vencedor} </Text>
-                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosVencedor}</Text>
-                  <Divider style={[styles.divider, styles.dividerVencedores]} />
-                  <Text style={styles.textPerdedor}>Grande perdedor: {perdedor} </Text>
-                  <Text style={[styles.textBold, styles.textCenter]}>Total de pontos: {pontosPerdedor}</Text>
-                </View>
-                <View style={styles.viewBotoesRecomecar}>
-                  <Button
-                    style={styles.botao}
-                    onPress={() => confirmacaoRecomecarPartida()}
-                    text='Recomeçar está partida' />
-                  <Button
-                    style={styles.botao}
-                    onPress={() => navigation.replace('Nova Partida')}
-                    text='Criar outra' />
-                </View>
-              </View>
-            </View>
+            <TelaVencedores
+              vencedor={vencedor}
+              perdedor={perdedor}
+              pontosVencedor={pontosVencedor}
+              pontosPerdedor={pontosPerdedor}
+              btnRecomecarPartida={() => confirmacaoRecomecarPartida()}
+              btnNovaPartida={() => criarNovaPartida()}
+            />
           </ScrollView>
       }
       <SnackbarComponent

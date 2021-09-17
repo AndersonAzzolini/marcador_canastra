@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center'
   },
-  image: { flex: 1 },
   text: {
     fontSize: 22
   },

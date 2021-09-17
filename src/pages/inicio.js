@@ -30,7 +30,6 @@ const Inicio = ({ navigation }) => {
         />
         <View style={styles.viewLogo}>
           <Image
-            style={styles.image}
             resizeMode='center'
             source={ImageTeeste}
           />
