@@ -7,7 +7,6 @@ import {
   View,
   Pressable
 } from 'react-native'
-import { Divider } from 'react-native-paper'
 import { styles } from './styles/partidaEmAndamento'
 import { deletaPonto, deletaTodosPontos, inserePontos } from '../db/pontos'
 import Input from '../components/input'
@@ -19,6 +18,7 @@ import SetaParaCima from '../assets/img/triangulo-para-cima.png'
 import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
 import ComponentePontos from '../components/partidaEmAndamento/componentePontos'
 import TelaVencedores from '../components/partidaEmAndamento/telaVencedores'
+import ComponenteInputEBotoes from '../components/partidaEmAndamento/botoesEinputs'
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -40,7 +40,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [historicoVisble, setHistoricoVisible] = useState(false)
   const [ultimaPontucaoEquipeAdversaria, setUltimaPontucaoEquipeAdversaria] = useState(false)
-  const [empate, setEmpate] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
   const equipe1 = route.params.informacoesPartida[0]
@@ -56,7 +55,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       title: nomePartida
     })
   })
-
   useEffect(() => {
     soma(pontosEquipe1, 1)
   }, [pontosEquipe1])
@@ -75,7 +73,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     setErros('É necessário informar o valor do campo ')
   }
 
-  console.log(empate);
   const ultimaPontucao = async () => {
     try {
       if (!ultimaPontucaoEquipeAdversaria) {
@@ -87,7 +84,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
       } else {
         if (totalPontosEquipe2 == totalPontosEquipe1) {
           console.log('caiu empate');
-          setEmpate(true)
           setUltimaPontucaoEquipeAdversaria(false)
           setBtnEquipe2(false)
           setBtnEquipe1(false)
@@ -116,7 +112,6 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const mudaStateEZeraPontos = async () => {
     setPontosEquipe1([{ pontos: 0 }])
     setPontosEquipe2([{ pontos: 0 }])
-    setEmpate(false)
     setHistoricoVencedor([...historicoVencedor])
     await deletaTodosPontos(idPartida)
     setBtnEquipe2(false)
@@ -283,12 +278,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
           >
             <View >
               {
-                ultimaPontucaoEquipeAdversaria && !fimPartida && !empate &&
+                ultimaPontucaoEquipeAdversaria && !fimPartida &&
                 <Text style={styles.textPerdedor}>Adicione os pontos de {perdedor}</Text>
-              }
-              {
-                empate &&
-                <Text style={styles.textPerdedor}>Desempate</Text>
               }
             </View>
             <ComponentePontos
@@ -299,51 +290,18 @@ const PartidaEmAndamento = ({ route, navigation }) => {
               totalPontosEquipe1={totalPontosEquipe1}
               totalPontosEquipe2={totalPontosEquipe2}
             />
-            <View style={styles.viewBotoesEInputs}>
-              <View style={styles.viewBotoesAdicionarERemover}>
-                <View style={styles.input}>
-                  <Input
-                    keyboardType='phone-pad'
-                    value={inputPontosEquipe1}
-                    onChangeText={text => setInputPontosEquipe1(text)}
-                    placeholder='Pontos a adicionar' />
-                </View>
-                <Button
-                  disabled={btnEquipe1}
-                  text='Adicionar ponto'
-                  onPress={() => adicionaPontoEquipe(1)}
-                  style={styles.botao}
-                />
-                <Button
-                  disabled={btnEquipe1}
-                  onPress={() => confirmacaoRemoverPonto(1)}
-                  text='Remover ponto'
-                  style={[styles.botao, styles.botaoExcluir]}
-                />
-              </View>
-              <View style={styles.viewBotoesAdicionarERemover}>
-                <View style={styles.input}>
-                  <Input
-                    keyboardType='phone-pad'
-                    value={inputPontosEquipe2}
-                    onChangeText={text => setInputPontosEquipe2(text)}
-                    placeholder='Pontos a adicionar' />
-                </View>
-                <Button
-                  disabled={btnEquipe2}
-                  text='Adicionar ponto'
-                  onPress={() => adicionaPontoEquipe(2)}
-                  style={styles.botao}
-                />
-                <Button
-                  disabled={btnEquipe2}
-                  text='Remover ponto'
-                  onPress={() => confirmacaoRemoverPonto(2)}
-                  style={[styles.botao, styles.botaoExcluir]}
-                />
-              </View>
-            </View>
-
+            <ComponenteInputEBotoes
+              disableBtn1={btnEquipe1}
+              disableBtn2={btnEquipe2}
+              btnAddPontosEquipe1={() => adicionaPontoEquipe(1)}
+              btnAddPontosEquipe2={() => adicionaPontoEquipe(2)}
+              inputPontosEquipe1={inputPontosEquipe1}
+              inputPontosEquipe2={inputPontosEquipe2}
+              btnRemovePontosEquipe1={() => confirmacaoRemoverPonto(1)}
+              btnRemovePontosEquipe2={() => confirmacaoRemoverPonto(2)}
+              onChangeText1={text => setInputPontosEquipe1(text)}
+              onChangeText2={text => setInputPontosEquipe2(text)}
+            />
             <View style={styles.viewInformacoesPartida}>
               <View >
                 <Text style={styles.textBold}>Pontos para vencer: {pontosMaximo}</Text>
@@ -373,7 +331,8 @@ const PartidaEmAndamento = ({ route, navigation }) => {
             </View>
           </ScrollView>
           :
-          <ScrollView contentContainerStyle={styles.scroll}
+          <ScrollView
+            contentContainerStyle={styles.scroll}
             keyboardShouldPersistTaps='handled'
           >
             <TelaVencedores

@@ -12,43 +12,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
     minHeight: Dimensions.get('window').height * 0.25,
   },
-  viewPontos: {
-    flex: 1,
-    paddingTop: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  viewPontosTotal: {
-    maxWidth: Dimensions.get('window').width * 0.4,
-    paddingTop: 15,
-    justifyContent: 'flex-start'
-  },
-  viewVencedorEPerdedor: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  viewBotoesEInputs: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  viewBotoesAdicionarERemover: {
-    flex: 1
-  },
-  text: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  textEquipes: {
-    maxWidth: Dimensions.get('window').width * 0.4,
-    marginBottom: 15
-  },
-  textTotal: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#36D948'
-  },
   textPerdedor: {
     color: '#FA5A46',
     fontSize: 20,
@@ -56,49 +19,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 5,
   },
-  textVencedor: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 5,
-    textAlign: 'center',
-    color: Cores.verdeEscuro
-  },
   textBold: {
     fontWeight: 'bold',
     fontSize: 16
   },
-  textCenter: {
-    textAlign: 'center'
-  },
+ 
   textHistorico: {
     marginTop: 10,
     textAlign: 'left'
   },
   textRodadas: {
     textAlign: 'left',
-    marginTop:5
-  },
-  botao: {
-    borderRadius: 10,
-    minHeight: 50,
-    marginHorizontal: 5
-  },
-  botaoExcluir: {
-    backgroundColor: '#FA5A46',
-    minHeight: 50,
-  },
-  divider: {
-    backgroundColor: 'black',
-   },
-  dividerVencedores: {
-    marginVertical: 30,
-  },
-  image: {
-    height: 50,
-    width: 50,
-  },
-  input: {
-    marginHorizontal: 5
+    marginTop: 5
   },
 })
 export { styles }

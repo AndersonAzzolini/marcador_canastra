@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: '#36D948'
   },
   divider: {
-    backgroundColor: 'black',
+    borderWidth:1
    },
 
 })
