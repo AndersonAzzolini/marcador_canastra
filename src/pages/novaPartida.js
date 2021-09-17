@@ -153,7 +153,7 @@ const NovaPartida = ({ navigation }) => {
             error={errors.pontos}
           />
           {
-            errors.pontos &&
+            errors.pontos && touched.nomePartida &&
             <Text style={styles.textErros}>{errors.pontos}</Text>
           }
         </View>
