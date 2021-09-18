@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Alert,
   Image,
@@ -17,6 +17,7 @@ import SetaParaBaixo from '../assets/img/triangulo-para-baixo.png'
 import ComponentePontos from '../components/partidaEmAndamento/componentePontos'
 import TelaVencedores from '../components/partidaEmAndamento/telaVencedores'
 import ComponenteInputEBotoes from '../components/partidaEmAndamento/botoesEinputs'
+import AdMob, { BannerAd, BannerAdSize } from '@react-native-admob/admob';
 
 const PartidaEmAndamento = ({ route, navigation }) => {
   const [pontosEquipe1, setPontosEquipe1] = useState(route.params.pontosEquipe1)
@@ -34,9 +35,11 @@ const PartidaEmAndamento = ({ route, navigation }) => {
   const [btnEquipe1, setBtnEquipe1] = useState(false)
   const [btnEquipe2, setBtnEquipe2] = useState(false)
   const [fimPartida, setFimPartida] = useState(false)
+  const [loadingBanner, setLoadingBanner] = useState(true);
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [historicoVisble, setHistoricoVisible] = useState(false)
+  const bannerRef = useRef(null);
   const [ultimaPontucaoEquipeAdversaria, setUltimaPontucaoEquipeAdversaria] = useState(false)
   const pontosMaximo = route.params.informacoesPartida[0].pontosMaximo
   const nomePartida = route.params.informacoesPartida[0].nomePartida
@@ -61,6 +64,13 @@ const PartidaEmAndamento = ({ route, navigation }) => {
     soma(pontosEquipe2)
   }, [pontosEquipe2])
 
+  useEffect(() => {
+    const init = async () => {
+      await AdMob.initialize();
+      setLoadingBanner(false);
+    };
+    init();
+  }, []);
 
   useEffect(() => {
     comparaPontuação()
@@ -354,8 +364,17 @@ const PartidaEmAndamento = ({ route, navigation }) => {
               btnRecomecarPartida={() => confirmacaoRecomecarPartida()}
               btnNovaPartida={() => criarNovaPartida()}
             />
+
+
           </ScrollView>
       }
+      <BannerAd
+        size={BannerAdSize.BANNER}
+        unitId={'ca-app-pub-3940256099942544/6300978111'}
+        onAdFailedToLoad={(error) => console.error(error)}
+        ref={bannerRef}
+        size={'ADAPTIVE_BANNER'}
+      />
       <SnackbarComponent
         onDismissSnackBar={() => setSnackbarVisible(false)}
         visible={snackbarVisible}
